@@ -19,11 +19,14 @@ Aufruf:
 from __future__ import annotations
 
 import argparse
+import difflib
 import hashlib
 import io
+import json
 import math
 import os
 import random
+import re
 import subprocess
 import sys
 import tarfile
@@ -44,6 +47,9 @@ TWEMOJI_URL = "https://raw.githubusercontent.com/jdecked/twemoji/main/assets/svg
 VOICE_URL = "https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-piper-{}.tar.bz2"
 VOICE_TR = "tr_TR-dfki-medium"
 VOICE_DE = "de_DE-thorsten-medium"
+WHISPER_URL = "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-whisper-small.tar.bz2"
+WHISPER_FILES = ("small-encoder.int8.onnx", "small-decoder.int8.onnx", "small-tokens.txt")
+TR_SPEED, TR_SLOW, DE_SPEED = 1.08, 1.35, 1.05  # Piper length_scale (größer = langsamer)
 
 # Farben
 BG_TOP = (255, 248, 238)
@@ -199,11 +205,59 @@ def ensure_assets(cache: str) -> None:
         os.remove(tarpath)
 
 
+def ensure_whisper(cache: str) -> None:
+    wdir = os.path.join(cache, "whisper")
+    if all(os.path.exists(os.path.join(wdir, f)) for f in WHISPER_FILES):
+        return
+    tarpath = os.path.join(wdir, "whisper.tar.bz2")
+    print("Lade Whisper-Modell für --verify (ca. 640 MB) …", flush=True)
+    download(WHISPER_URL, tarpath)
+    with tarfile.open(tarpath, "r:bz2") as tf:
+        for m in tf.getmembers():
+            base = os.path.basename(m.name)
+            if base in WHISPER_FILES and m.isfile():
+                with open(os.path.join(wdir, base), "wb") as f:
+                    f.write(tf.extractfile(m).read())
+    os.remove(tarpath)
+
+
 # --------------------------------------------------------------------------------------
 # Audio
 # --------------------------------------------------------------------------------------
+def read_wav(path: str) -> np.ndarray:
+    with wave.open(path) as r:
+        return np.frombuffer(r.readframes(r.getnframes()), dtype=np.int16).astype(np.float32) / 32768.0
+
+
+def tr_words(text: str) -> list:
+    text = text.replace("İ", "i").replace("I", "ı").lower().replace("i̇", "i")
+    return re.findall(r"[a-zçğıöşüâîû]+", text)
+
+
+class Verifier:
+    """Prüft türkische Aufnahmen mit Whisper (sherpa-onnx). Nur mit --verify aktiv."""
+
+    def __init__(self, cache: str):
+        import sherpa_onnx
+
+        d = os.path.join(cache, "whisper")
+        self.rec = sherpa_onnx.OfflineRecognizer.from_whisper(
+            encoder=os.path.join(d, "small-encoder.int8.onnx"), decoder=os.path.join(d, "small-decoder.int8.onnx"),
+            tokens=os.path.join(d, "small-tokens.txt"), language="tr", task="transcribe", num_threads=4)
+
+    def check(self, text: str, audio: np.ndarray):
+        pad = np.zeros(int(0.4 * SR), np.float32)
+        s = self.rec.create_stream()
+        s.accept_waveform(SR, np.concatenate([pad, audio, pad, pad]))
+        self.rec.decode_stream(s)
+        heard = s.result.text.strip()
+        want, got = tr_words(text), tr_words(heard)
+        ratio = difflib.SequenceMatcher(None, " ".join(want), " ".join(got)).ratio()
+        return want == got, ratio, heard
+
+
 class Voice:
-    def __init__(self, name: str, cache: str):
+    def __init__(self, name: str, cache: str, verifier: Verifier | None = None, takes: int = 6):
         from piper import PiperVoice
 
         self.name = name
@@ -212,19 +266,52 @@ class Voice:
             raise RuntimeError(f"{name}: unerwartete Abtastrate {self.voice.config.sample_rate}")
         self.dir = os.path.join(cache, "tts")
         os.makedirs(self.dir, exist_ok=True)
+        self.verifier, self.takes = verifier, takes
+        self.report = []
 
-    def say(self, text: str, length_scale: float = 1.0) -> np.ndarray:
+    def _synth(self, text: str, length_scale: float, path: str) -> None:
         from piper import SynthesisConfig
 
+        with wave.open(path + ".part", "wb") as w:
+            self.voice.synthesize_wav(text, w, syn_config=SynthesisConfig(length_scale=length_scale))
+        os.replace(path + ".part", path)
+
+    def _select(self, text: str, length_scale: float, path: str) -> None:
+        """Piper klingt bei jeder Synthese etwas anders: mehrere Aufnahmen erzeugen und die behalten,
+        die Whisper genau so versteht, wie sie geschrieben wird (sonst die ähnlichste)."""
+        best, tmps = None, []
+        for take in range(self.takes):
+            tmp = f"{path}.take{take}.wav"
+            tmps.append(tmp)
+            if take == 0 and os.path.exists(path):
+                os.replace(path, tmp)
+            else:
+                self._synth(text, length_scale, tmp)
+            ok, ratio, heard = self.verifier.check(text, read_wav(tmp))
+            if best is None or (ok, ratio) > best[:2]:
+                best = (ok, ratio, heard, tmp, take + 1)
+            if ok:
+                break
+        os.replace(best[3], path)
+        for tmp in tmps:
+            if os.path.exists(tmp):
+                os.remove(tmp)
+        info = {"text": text, "length_scale": length_scale, "heard": best[2], "exact": best[0],
+                "similarity": round(best[1], 3), "takes": len(tmps), "chosen": best[4]}
+        with open(path + ".ok", "w", encoding="utf-8") as f:
+            json.dump(info, f, ensure_ascii=False)
+
+    def say(self, text: str, length_scale: float = 1.0) -> np.ndarray:
         key = hashlib.sha1(f"{self.name}|{text}|{length_scale}".encode()).hexdigest()[:16]
         path = os.path.join(self.dir, f"{self.name}_{key}.wav")
-        if not os.path.exists(path):
-            with wave.open(path + ".part", "wb") as w:
-                self.voice.synthesize_wav(text, w, syn_config=SynthesisConfig(length_scale=length_scale))
-            os.replace(path + ".part", path)
-        with wave.open(path) as r:
-            a = np.frombuffer(r.readframes(r.getnframes()), dtype=np.int16).astype(np.float32) / 32768.0
-        return normalize(trim(a))
+        if self.verifier is not None and not os.path.exists(path + ".ok"):
+            self._select(text, length_scale, path)
+        elif not os.path.exists(path):
+            self._synth(text, length_scale, path)
+        if os.path.exists(path + ".ok"):
+            with open(path + ".ok", encoding="utf-8") as f:
+                self.report.append(json.load(f))
+        return normalize(trim(read_wav(path)))
 
 
 def trim(a: np.ndarray, thr: float = 0.012, margin: float = 0.04) -> np.ndarray:
@@ -437,17 +524,17 @@ def wrap_lines(font, text, max_w):
 # Szenen
 # --------------------------------------------------------------------------------------
 class Ctx:
-    def __init__(self, cache):
+    def __init__(self, cache, verify=False, takes=6):
         self.gfx = Gfx(cache)
-        self.tr = Voice(VOICE_TR, cache)
+        self.tr = Voice(VOICE_TR, cache, Verifier(cache) if verify else None, takes)
         self.de = Voice(VOICE_DE, cache)
         self.sfx = make_sfx()
 
     def TR(self, text, slow=False):
-        return self.tr.say(text, 1.5 if slow else 1.08)
+        return self.tr.say(text, TR_SLOW if slow else TR_SPEED)
 
     def DE(self, text):
-        return self.de.say(text, 1.05)
+        return self.de.say(text, DE_SPEED)
 
 
 class Scene:
@@ -1292,14 +1379,30 @@ def main():
     ap.add_argument("--out", default=os.path.join(HERE, "output", "hayvanlar_tiere_deutsch_tuerkisch.mp4"))
     ap.add_argument("--preview", action="store_true", help="nur Standbilder (PNG) erzeugen")
     ap.add_argument("--crf", type=int, default=20)
+    ap.add_argument("--verify", action="store_true",
+                    help="türkische Aufnahmen mit Whisper prüfen und pro Wort die verständlichste Aufnahme wählen "
+                         "(braucht sherpa-onnx, lädt ca. 640 MB)")
+    ap.add_argument("--takes", type=int, default=6, help="max. Aufnahmen pro Wort bei --verify")
     args = ap.parse_args()
 
     ensure_assets(args.cache)
+    if args.verify:
+        ensure_whisper(args.cache)
     t0 = time.time()
-    ctx = Ctx(args.cache)
+    ctx = Ctx(args.cache, verify=args.verify, takes=args.takes)
     scenes = build_scenes(ctx)
     total = sum(s.duration for s in scenes)
     print(f"{len(scenes)} Szenen, Gesamtlänge {total / 60:.1f} min (Aufbau {time.time() - t0:.0f}s)", flush=True)
+    if ctx.tr.report:
+        uniq = {(r["text"], r["length_scale"]): r for r in ctx.tr.report}.values()
+        exact = [r for r in uniq if r["exact"]]
+        print(f"Aussprache-Check (Whisper): {len(exact)}/{len(uniq)} türkische Aufnahmen exakt erkannt")
+        for r in sorted(uniq, key=lambda r: r["similarity"]):
+            if not r["exact"]:
+                print(f"   ~ {r['text']!r} (Tempo {r['length_scale']}) gehört als {r['heard']!r}, "
+                      f"Ähnlichkeit {r['similarity']:.2f}, {r['takes']} Aufnahmen")
+        with open(os.path.join(args.cache, "aussprache_check.json"), "w", encoding="utf-8") as f:
+            json.dump(list(uniq), f, ensure_ascii=False, indent=1)
 
     if args.preview:
         pdir = os.path.join(args.cache, "preview")

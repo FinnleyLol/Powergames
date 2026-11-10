@@ -2,3 +2,5 @@ piper-tts>=1.3
 numpy
 pillow>=10
 cairosvg
+# optional, nur für "python make_video.py --verify":
+# sherpa-onnx

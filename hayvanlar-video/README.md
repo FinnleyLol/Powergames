@@ -101,6 +101,23 @@ python make_video.py --preview  # nur Standbilder nach build/preview/ (schnelle 
 ```
 
 Beim ersten Start lädt das Skript Schrift, Bilder und die zwei Stimmen (rund 130 MB) nach `build/`.
+
+### Aussprache-Check mit `--verify`
+
+Die Computerstimme klingt bei jeder Synthese etwas anders. Manchmal verschluckt sie ein Wortende.
+Mit `--verify` erzeugt das Skript pro türkischem Wort bis zu 6 Aufnahmen (`--takes`). Jede Aufnahme
+wird mit der Spracherkennung Whisper geprüft, und es bleibt die Aufnahme, die genau so verstanden wird,
+wie das Wort geschrieben ist (sonst die ähnlichste). Dafür braucht es zusätzlich `pip install sherpa-onnx`,
+und das Whisper-Modell (ca. 640 MB) wird geladen. Das Ergebnis steht in `build/aussprache_check.json`.
+
+```bash
+pip install sherpa-onnx
+python make_video.py --verify --takes 14
+```
+
+Für das fertige Video wurden 69 von 82 türkischen Aufnahmen exakt erkannt. Die übrigen sind meist
+Schreibweisen der Erkennung, nicht Aussprachefehler. Beispiel: *kurbağa* wird korrekt als „kurbaa“
+gesprochen, Whisper schreibt es aber „Kurba“.
 Wörter, Aussprache-Tipps, Quizfragen und Sprechertexte stehen oben in `make_video.py`
 (`CHAPTERS`, `PRONUNCIATION`, `QUIZ` …). Neue Tiere kannst du dort ergänzen.
 
