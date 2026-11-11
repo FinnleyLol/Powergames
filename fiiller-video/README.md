@@ -98,6 +98,10 @@ python make_video.py --verify --takes 10  # Aussprache per Whisper prüfen, best
 
 Verben, Sätze, Tipps und Quizfragen stehen oben in `make_video.py` (`CHAPTERS`, `PHRASES`, `QUIZ` …).
 
+Für das fertige Video wurden 95 von 105 türkischen Aufnahmen von Whisper exakt erkannt. Die übrigen
+sind meist Eigenheiten der Erkennung bei einzelnen Wörtern (z. B. ein dazuerfundener Anfangslaut:
+„Buyurum“ statt *uyuyorum*, oder „Filler“ statt *fiiller*).
+
 ## Quellen und Lizenzen
 
 - **Türkische Stimme:** Piper TTS `tr_TR-dfki-medium` (Datensatz DFKI, CC BY-NC-SA 4.0, nur nicht-kommerziell)
