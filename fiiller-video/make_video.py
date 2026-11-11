@@ -318,7 +318,7 @@ class InfinitiveScene(Scene):
         self.say(ctx.DE("Ohne die Endung bleibt der Stamm. Der Stamm ist gleichzeitig ein Befehl:"), "stem")
         self.wait(0.3)
         for i, (tr, de) in enumerate((("Gel!", "Komm!"), ("Bak!", "Schau!"))):
-            self.say(ctx.TR(tr), f"cmd{i}")
+            self.say(ctx.TR(tr.replace("!", ".")), f"cmd{i}")  # mit „!“ klingt die Stimme verzerrt
             self.wait(0.25)
             self.say(ctx.DE(de))
             self.wait(0.5)
