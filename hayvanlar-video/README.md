@@ -92,15 +92,19 @@ Im Türkischen gibt es **keine Artikel**, also kein der, die, das. Betont wird m
 ## Video selbst neu erzeugen
 
 Voraussetzungen: Python 3.10+, `ffmpeg` und die Cairo-Bibliothek (für die SVG-Bilder).
+Die gemeinsame Technik liegt in [`../lernvideo/engine.py`](../lernvideo/engine.py); hier stehen nur Inhalte und Szenen.
 
 ```bash
+pip install -r requirements.txt          # im Hauptordner des Repositorys
 cd hayvanlar-video
-pip install -r requirements.txt
 python make_video.py            # erzeugt output/hayvanlar_tiere_deutsch_tuerkisch.mp4
 python make_video.py --preview  # nur Standbilder nach build/preview/ (schnelle Kontrolle)
 ```
 
-Beim ersten Start lädt das Skript Schrift, Bilder und die zwei Stimmen (rund 130 MB) nach `build/`.
+Beim ersten Start lädt das Skript Schrift, Bilder und die zwei Stimmen (rund 130 MB) in den
+gemeinsamen Ordner `.cache/` im Hauptordner. Alle Videos nutzen ihn zusammen.
+Wörter, Aussprache-Tipps, Quizfragen und Sprechertexte stehen oben in `make_video.py`
+(`CHAPTERS`, `PRONUNCIATION`, `QUIZ` …). Neue Tiere kannst du dort ergänzen.
 
 ### Aussprache-Check mit `--verify`
 
@@ -118,8 +122,6 @@ python make_video.py --verify --takes 14
 Für das fertige Video wurden 69 von 82 türkischen Aufnahmen exakt erkannt. Die übrigen sind meist
 Schreibweisen der Erkennung, nicht Aussprachefehler. Beispiel: *kurbağa* wird korrekt als „kurbaa“
 gesprochen, Whisper schreibt es aber „Kurba“.
-Wörter, Aussprache-Tipps, Quizfragen und Sprechertexte stehen oben in `make_video.py`
-(`CHAPTERS`, `PRONUNCIATION`, `QUIZ` …). Neue Tiere kannst du dort ergänzen.
 
 ## Quellen und Lizenzen
 
