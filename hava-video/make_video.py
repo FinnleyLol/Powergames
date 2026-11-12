@@ -204,6 +204,15 @@ class AdjUsageScene(GrammarScene):
             else:
                 segs.append((rest, "Bold", 54, INK))
             self.rows.append(pill(g, segs, h=96, minw=1150))
+        de_segs = []
+        for i, end in enumerate(("es", "e", "er", "en")):
+            de_segs += [(("   ·   " if i else ""), "Bold", 50, MUTED), ("kalt", "Bold", 60, INK), (end, "ExtraBold", 60, RED)]
+        self.teaser_de = pill(g, de_segs, h=120, icon="1f1e9-1f1ea", minw=1300)
+        self.teaser_tr = pill(g, [(("   ·   " if i else ""), "Bold", 50, MUTED) if j == 0 else ("soğuk", "ExtraBold", 60, TEAL)
+                                  for i in range(4) for j in (0, 1) if not (i == 0 and j == 0)],
+                              h=120, icon="1f1f9-1f1f7", minw=1300)
+        self.teaser_note = text_layer(g, [("Deutsch: Endungen wechseln   ·   Türkisch: ", "SemiBold", 40, MUTED),
+                                          ("immer gleich!", "ExtraBold", 44, TEAL)])
         self.pred = pill(g, [("Hava ", "Bold", 60, INK), ("soğuk.", "ExtraBold", 60, TEAL),
                              ("    =  Das Wetter ist kalt.", "Medium", 40, MUTED),
                              ("   (kein Wort für „ist“!)", "SemiBold", 34, RED)], h=110, fill=NOTE_BG, icon="1f4cc")
@@ -211,6 +220,15 @@ class AdjUsageScene(GrammarScene):
     def render(self, t):
         f = self.g.bg.copy()
         self.heading(f, "Adjektive: Sie ändern sich nie!", y=110, size=60)
+        first = self.m("row0")[0]
+        if t < first + 0.3:  # Einleitung: deutsche Endungen gegen das immer gleiche türkische Adjektiv
+            fade = 1 - clamp((t - first) / 0.3)
+            op, dy = appear(t, self.m("intro")[0] + 1.2)
+            put_center(f, self.teaser_tr, W / 2, 600 + dy, opacity=op * fade)
+            op, dy = appear(t, self.m("intro2")[0])
+            put_center(f, self.teaser_de, W / 2, 420 + dy, opacity=op * fade)
+            op, dy = appear(t, self.m("intro2")[0] + 2.0)
+            place(f, self.teaser_note, W / 2, 760, 44, opacity=op * fade, align="center", dy=dy)
         for i, im in enumerate(self.rows):
             st = self.m(f"row{i}")[0]
             if t >= st:
