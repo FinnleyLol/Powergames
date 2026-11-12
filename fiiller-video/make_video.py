@@ -161,47 +161,8 @@ EXTRA_STATES = {
 
 
 # --------------------------------------------------------------------------------------
-# Grafik-Bausteine
+# Grafik-Bausteine (place, pill, appear … kommen aus der Engine)
 # --------------------------------------------------------------------------------------
-def place(frame, lay, x, cy, size, opacity=1.0, align="left", dy=0.0):
-    """Text so setzen, dass die Kleinbuchstaben ungefähr um cy zentriert sind."""
-    y = cy + 0.36 * size - lay.baseline + dy
-    if align == "left":
-        x -= 12
-    elif align == "center":
-        x -= lay.width / 2
-    else:
-        x -= lay.width - 12
-    put(frame, lay, x, y, opacity)
-
-
-def pill(g, segs, h=96, fill=WHITE, icon=None, padx=36, outline=None, ow=0, minw=0, radius=None):
-    """Abgerundete Box mit (optional) Emoji und Text. Das Bild hat den Schattenrand in .pad."""
-    size = max(s[2] for s in segs)
-    lay = text_layer(g, segs)
-    isz = int(h * 0.6)
-    iw = isz + 18 if icon else 0
-    content = lay.width - 24 + iw
-    w = max(minw, int(content + 2 * padx))
-    im, pad = box(w, h, radius if radius is not None else min(h // 2, 48), fill, outline=outline, ow=ow,
-                  blur=12, sh_alpha=30, sh_dy=5)
-    x = pad + (w - content) / 2
-    if icon:
-        put_center(im, g.emoji(icon, isz), x + isz / 2, pad + h / 2)
-    put(im, lay, x + iw - 12, pad + h / 2 + 0.36 * size - lay.baseline)
-    im.pad = pad  # type: ignore[attr-defined]
-    return im
-
-
-def put_left(frame, im, x, y, opacity=1.0, dy=0.0):
-    put(frame, im, x - im.pad, y - im.pad + dy, opacity)
-
-
-def appear(t, start, dur=0.3):
-    s = t - start
-    return clamp(s / dur), (1 - ease_out_cubic(s / (dur + 0.05))) * 18
-
-
 def stress_segs(syl, size=34, base=INK):
     segs = []
     for i, s in enumerate(syl):
@@ -217,25 +178,6 @@ def sentence_segs(sent, verb, size, color=INK, verb_color=RED):
         return [(sent, "Bold", size, color)]
     parts = [(sent[:i], color), (verb, verb_color), (sent[i + len(verb):], color)]
     return [(p, "Bold", size, c) for p, c in parts if p]
-
-
-def state_at(scene, t, order, mapping):
-    """Zustand der Statusleiste: die zuletzt begonnene Marke (Pausen-Marken mit Fortschritt)."""
-    best = None
-    for k in order:
-        a, b = scene.m(k)
-        if a <= t and (best is None or a >= scene.m(best)[0]):
-            best = k
-    if best is None:
-        return None, 0, None, False
-    a, b = scene.m(best)
-    state = mapping.get(best, best)
-    prog = None
-    if state in ("speak", "recall", "speak_sent", "ask"):
-        if t >= b:
-            return None, 0, None, False
-        prog = 1 - (t - a) / (b - a)
-    return state, t - a, prog, a <= t < b
 
 
 # --------------------------------------------------------------------------------------
