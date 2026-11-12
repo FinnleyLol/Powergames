@@ -24,6 +24,13 @@ class Noun:
     note: str = ""     # Tipp
     de_say: str = ""   # Was die deutsche Stimme sagt (falls abweichend)
     tr_say: str = ""   # Schreibweise nur für die türkische Stimme (falls sie das Wort sonst undeutlich spricht)
+    # nur für RichCardScene:
+    form: str = ""        # gebeugte Form mit | zwischen Stamm und Endung, z. B. „üşü|yorum“
+    form_de: str = ""     # „mir ist kalt“
+    form_label: str = ""  # „ich-Form“, „es-Form“ …
+    sent: str = ""        # Beispielsatz (Türkisch)
+    sent_de: str = ""     # Übersetzung
+    sent_hl: str = ""     # Teil des Satzes, der rot markiert wird
 
     def speak(self, ctx, slow=False):
         return ctx.TR((self.tr_say or self.tr) + ".", slow=slow, expect=self.tr + ".")
@@ -257,6 +264,139 @@ class CardScene(Scene):
         return f
 
 
+# ---------------------------- Wortkarte mit Form und Beispielsatz -----------------------
+def rich_card_base(ctx: Ctx):
+    g = ctx.gfx
+    base = g.bg.copy()
+    im, pad = box(CARD_S, CARD_S, 56, WHITE, blur=26, sh_alpha=60, sh_dy=16)
+    base.paste(im, (CARD_X - pad, CARD_Y - pad), im)
+    for flag, label, cy in (("1f1e9-1f1ea", "DEUTSCH", 208), ("1f1f9-1f1f7", "TÜRKÇE", 366)):
+        put_center(base, g.emoji(flag, 42), RX + 21, cy)
+        place(base, text_layer(g, [(label, "SemiBold", 28, MUTED)]), RX + 58, cy, 28)
+    ImageDraw.Draw(base).rounded_rectangle([RX, 326, RX + RW, 330], 2, fill=LINE)
+    return base
+
+
+def highlight_segs(text, hl, size, color=INK, hl_color=RED, weight="Bold"):
+    i = text.find(hl) if hl else -1
+    if i < 0:
+        return [(text, weight, size, color)]
+    parts = [(text[:i], color), (hl, hl_color), (text[i + len(hl):], color)]
+    return [(p, weight, size, c) for p, c in parts if p]
+
+
+class RichCardScene(Scene):
+    """Wortkarte für Nomen, Adjektive und Verben: Wort (normal + langsam) → optional gebeugte Form
+    → optional Beispielsatz, jeweils mit Pause zum Nachsprechen."""
+    ORDER = ["de", "tr", "slow", "speak1", "form", "form_de", "speak_form", "sent_de", "sent", "speak2"]
+    MAP = {"speak1": "speak", "form": "tr_form", "form_de": "de", "speak_form": "recall", "sent_de": "de",
+           "sent": "tr_sent", "speak2": "speak_sent"}
+    STATES = {
+        "tr_form": ("1f442", "Die Form im Satz – hör genau hin", False),
+        "tr_sent": ("1f442", "Beispielsatz – hör genau hin", False),
+        "recall": ("1f5e3", "Jetzt du! Sag es auf Türkisch", True),
+        "speak_sent": ("1f5e3", "Jetzt du! Sprich den Satz nach", True),
+    }
+
+    def __init__(self, ctx, n: Noun, ch: Chapter, idx: int, total: int):
+        super().__init__(ctx)
+        g = self.g
+        self.n = n
+        self.sfx("pop", at=0.05)
+        self.wait(0.5)
+        self.say(ctx.DE(n.de_say or n.de), "de")
+        self.wait(0.35)
+        self.say(n.speak(ctx), "tr")
+        self.wait(0.45)
+        slow = n.speak(ctx, slow=True)
+        self.say(slow, "slow")
+        self.wait(0.15)
+        self.span("speak1", max(2.0, 1.2 * len(slow) / SR + 0.9))
+        self.wait(self.m("speak1")[1] - self.t)
+        if n.form:
+            plain = n.form.replace("|", "")
+            self.say(ctx.TR(plain + "."), "form")
+            self.wait(0.25)
+            self.say(ctx.DE(n.form_de.replace(" / ", ", ")), "form_de")
+            self.wait(0.1)
+            self.span("speak_form", 1.8)
+            self.wait(2.1)
+        if n.sent:
+            self.say(ctx.DE(n.sent_de), "sent_de")
+            self.wait(0.3)
+            sent = ctx.TR(n.sent)
+            self.say(sent, "sent")
+            self.wait(0.15)
+            self.span("speak2", max(2.2, 1.15 * len(sent) / SR + 0.8))
+            self.wait(self.m("speak2")[1] - self.t)
+        self.finish(0.25)
+
+        self.base = ctx.rich_card_base.copy()
+        self.title_bar(self.base, ch.icon, ch.tr, ch.de, right=f"{idx} / {total}", progress=idx / total)
+        self.emo = g.emoji(n.emoji, 620)
+        self.del_ = text_layer(g, [(n.de, "SemiBold", g.fit("SemiBold", n.de, 76, RW).size, TEAL)])
+        size = g.fit("ExtraBold", n.tr, 136, RW).size
+        self.word = text_layer(g, [(n.tr, "ExtraBold", size, RED)])
+        segs = [("Aussprache:  ", "Medium", 28, MUTED)]
+        for i, s_ in enumerate(n.syl):
+            if i:
+                segs.append((" · ", "Medium", 30, MUTED))
+            segs.append((s_, "Bold", 34, RED if i == n.stress else INK))
+        self.hint = text_layer(g, segs)
+        y = 562
+        self.form_y = self.sent_y = self.note_y = None
+        self.form = self.sentence = self.note = None
+        if n.form:
+            stem, end = n.form.split("|")
+            self.form = pill(g, [(f"{n.form_label or 'Form'}:  ", "Medium", 30, MUTED), (stem, "Bold", 50, INK),
+                                 (end, "Bold", 50, RED), (f"   = {n.form_de}", "Medium", 34, TEAL)], h=88, padx=30)
+            self.form_y, y = y, y + 106
+        if n.sent:
+            fs = 52
+            while fs > 30 and text_layer(g, highlight_segs(n.sent, n.sent_hl, fs)).width > RW - 70:
+                fs -= 2
+            tr = text_layer(g, highlight_segs(n.sent, n.sent_hl, fs))
+            de = text_layer(g, [(n.sent_de, "Medium", g.fit("Medium", n.sent_de, 34, RW - 70).size, MUTED)])
+            im, pad = box(RW, 140, 34, WHITE, blur=12, sh_alpha=30, sh_dy=5)
+            place(im, tr, pad + 34, pad + 52, fs)
+            place(im, de, pad + 34, pad + 106, 34)
+            im.pad = pad  # type: ignore[attr-defined]
+            self.sentence = im
+            self.sent_y, y = y, y + 168
+        if n.note:
+            nsz = g.fit("Medium", n.note, 30, RW - 110).size
+            self.note = pill(g, [(n.note, "Medium", nsz, INK)], h=64, fill=NOTE_BG, icon="1f4a1", padx=24)
+            self.note_y = y
+        self.pill = ctx.rich_pill
+
+    def render(self, t):
+        f = self.base.copy()
+        p = (t - 0.05) / 0.45
+        put_center(f, self.emo, CARD_X + CARD_S / 2, CARD_Y + CARD_S / 2 + math.sin(t * 2.2) * 6,
+                   opacity=clamp(p * 2), scale=max(0.01, (0.65 + 0.35 * ease_out_back(p)) * 520 / 620))
+        op, dy = appear(t, 0.25)
+        place(f, self.del_, RX, 284, 76, opacity=op, dy=dy)
+        if t >= self.m("tr")[0] - 0.05:
+            s = self.since(t, "tr") + 0.05
+            pulse = 1 + (0.03 * math.sin(self.since(t, "slow") * 8) if self.active(t, "slow") else 0)
+            sc = (0.85 + 0.15 * ease_out_back(s / 0.4)) * pulse
+            put_center(f, self.word, RX - 12 + self.word.width / 2, 516 - self.word.baseline + self.word.height / 2,
+                       opacity=clamp(s / 0.25), scale=sc)
+            place(f, self.hint, RX + RW, 366, 30, opacity=clamp((s - 0.2) / 0.3), align="right")
+        if self.note is not None and t >= self.m("slow")[0]:
+            op, dy = appear(t, self.m("slow")[0])
+            put_left(f, self.note, RX, self.note_y, op, dy)
+        if self.form is not None and t >= self.m("form")[0] - 0.05:
+            op, dy = appear(t, self.m("form")[0] - 0.05)
+            put_left(f, self.form, RX, self.form_y, op, dy)
+        if self.sentence is not None and t >= self.m("sent_de")[0] - 0.05:
+            op, dy = appear(t, self.m("sent_de")[0] - 0.05)
+            put_left(f, self.sentence, RX, self.sent_y, op, dy)
+        state, since, prog, playing = state_at(self, t, self.ORDER, self.MAP)
+        self.pill.draw(f, state, since, t, prog, bars=playing and prog is None)
+        return f
+
+
 # ---------------------------- Satz-Raster (z. B. Super-Sätze) --------------------------
 class PhraseGridScene(Scene):
     """Bis zu 4 Sätze als Karten (2×2): Türkisch, Deutsch, Pause zum Nachsprechen."""
@@ -439,13 +579,14 @@ class OverviewScene(Scene):
         x0, y0 = (W - cols * cw) / 2, 128
         for i, n in enumerate(items):
             iw, ih = cw - 14, ch_ - 14
+            k = min(1.0, ih / 172)  # Skalierung für kleinere Zellen
             im, pad = box(iw, ih, 26, WHITE, blur=8, sh_alpha=25, sh_dy=3)
-            put_center(im, g.emoji(n.emoji, 72), pad + iw / 2, pad + 50)
-            size = g.fit("Bold", n.tr, 40, iw - 26).size
-            place(im, text_layer(g, [(n.tr, "Bold", size, RED)]), pad + iw / 2, pad + 116, size, align="center")
+            put_center(im, g.emoji(n.emoji, int(72 * k)), pad + iw / 2, pad + 50 * k)
+            size = g.fit("Bold", n.tr, int(40 * k), iw - 26).size
+            place(im, text_layer(g, [(n.tr, "Bold", size, RED)]), pad + iw / 2, pad + 116 * k, size, align="center")
             de = n.de.split(" / ")[0]
-            dsz = g.fit("Medium", de, 25, iw - 26).size
-            place(im, text_layer(g, [(de, "Medium", dsz, MUTED)]), pad + iw / 2, pad + 152, dsz, align="center")
+            dsz = g.fit("Medium", de, int(25 * k), iw - 26).size
+            place(im, text_layer(g, [(de, "Medium", dsz, MUTED)]), pad + iw / 2, pad + 152 * k, dsz, align="center")
             col, row = i % cols, i // cols
             self.cells.append((im, x0 + col * cw + cw / 2, y0 + row * ch_ + ch_ / 2))
 
