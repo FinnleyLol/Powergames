@@ -604,6 +604,7 @@ class OutroScene(Scene):
     def __init__(self, ctx, big_tr, big_de, sub, de_lines, icon="1f389"):
         super().__init__(ctx)
         g = self.g
+        self.chapter = big_tr
         self.icon = icon
         self.wait(0.3)
         self.sfx("fanfare")

@@ -150,12 +150,24 @@ Achtung: „Mir ist kalt“ ist auf Türkisch ein Verb: ***Üşüyorum.*** (von 
 | scheinen / glänzen | **parlamak** | par · la · **mak** | parlıyor (sie scheint) | *Güneş parlıyor.* – Die Sonne scheint. |  |
 | frieren | **üşümek** | ü · schü · **mek** | üşüyorum (mir ist kalt) | *Çok üşüyorum.* – Mir ist sehr kalt. | So sagst du: Mir ist kalt. |
 | schwitzen | **terlemek** | ter · le · **mek** | terliyorum (ich schwitze) | *Yazın çok terliyorum.* – Im Sommer schwitze ich viel. | yazın = im Sommer |
-| warm werden | **ısınmak** | ı · sın · **mak** | ısınıyor (es wird warm) | *Hava ısınıyor.* – Es wird wärmer. |  |
+| gefrieren | **donmak** | don · **mak** | donuyor (es gefriert) | *Su donuyor.* – Das Wasser gefriert. | Donuyorum! = Ich erfriere! (umgangssprachlich) |
 | kalt werden | **soğumak** | soo · u · **mak** | soğuyor (es wird kalt) | *Hava soğuyor.* – Es wird kälter. | Çay soğuyor. = Der Tee wird kalt. |
 
 **Mini-Dialog:** *Hava nasıl?* (Wie ist das Wetter?) · *Hava güzel, güneş parlıyor.* (Das Wetter ist schön,
 die Sonne scheint.) · *Hava kötü, yağmur yağıyor.* (Das Wetter ist schlecht, es regnet.) ·
 *Çok soğuk, kar yağıyor.* (Es ist sehr kalt, es schneit.)
+
+## Zur Aussprache in diesem Video
+
+Jede türkische Aufnahme wurde mit Whisper geprüft (bis zu 20 Versuche je Aufnahme, die klarste wird genommen).
+Ergebnis: rund 100 von 133 Aufnahmen werden exakt erkannt. Bei den übrigen schreibt die Erkennung meist nur
+anders (*rüzgar* statt *rüzgâr*, *ilk bahar* statt *ilkbahar*, „20“ statt *yirmi*), das ist kein Aussprachefehler.
+
+- *ısınmak* (warm werden) wurde durch *donmak* (gefrieren) ersetzt: Die Stimme sprach das **m** nach dem **n**
+  in 40 Versuchen nie deutlich („ısınnak“). Merke dir trotzdem: *Hava ısınıyor.* = Es wird wärmer.
+- *sis* hört die Erkennung als einzelnes Wort oft als *ses* (Geräusch). Im Satz (*Sisli bir gece.*) wird es
+  sicher erkannt. Achte auf das helle **i**.
+- *soğuk* klingt in schnellen Wortgruppen fast wie „sook“. So sprechen es auch Muttersprachler im Alltag.
 
 ## Video selbst neu erzeugen
 
