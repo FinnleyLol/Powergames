@@ -309,10 +309,10 @@ class PhraseGridScene(Scene):
             op, dy = appear(t, st)
             col, row = i % 2, i // 2
             put_center(f, pair[1 if i == cur else 0], 520 + col * 880, 340 + row * 270 + dy, opacity=op)
-        if self.note and t >= self.m("row0")[0]:
-            op, dy = appear(t, self.m("row0")[0] + 0.5)
+        if self.note:
+            op, dy = appear(t, self.m("intro")[0] + 1.0)
             put_center(f, self.note, W / 2, 870 + dy, opacity=op)
-        order, mapping = [], {}
+        order, mapping = ["intro"], {"intro": "de"}
         for i in range(self.n):
             order += [f"tr{i}", f"de{i}", f"speak{i}"]
             mapping.update({f"tr{i}": "tr", f"de{i}": "de", f"speak{i}": "speak"})

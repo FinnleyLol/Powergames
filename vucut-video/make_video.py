@@ -20,6 +20,7 @@ Aufruf:
 """
 from __future__ import annotations
 
+import math
 import os
 import sys
 
@@ -86,12 +87,19 @@ PAIN = [("Başım ağrıyor.", "Mein Kopf tut weh.", "1f915"),
         ("Karnım ağrıyor.", "Mein Bauch tut weh.", "1f922")]
 QUIZ = ["göz", "el", "ağız", "kulak", "diş", "ayak", "saç", "kalp", "burun", "diz", "sırt", "parmak"]
 FLOATERS = ["1f441", "1f442", "1f443", "1f444", "270b", "1f9b6", "1f9b7", "1f4aa"]
-ICONS = ["1f915", "1f623", "1f922", "1f522", "1f4cc"]
+ICONS = ["1f915", "1f623", "1f922", "1f522", "1f4cc", "1f440"]
 
 
 # --------------------------------------------------------------------------------------
 # Bonus-Szenen
 # --------------------------------------------------------------------------------------
+def draw_narration(scene, f, t, marks):
+    """Statusleiste „Hör zu – Deutsch“, solange die deutsche Erklärung läuft."""
+    for k in marks:
+        if scene.active(t, k):
+            scene.pill.draw(f, "de", scene.since(t, k), t, None, cy=1010)
+
+
 class NumbersScene(Scene):
     chapter = "Mehrzahl & Zahlen"
 
@@ -118,6 +126,7 @@ class NumbersScene(Scene):
             self.wait(0.7)
             self.marks[f"num{i}"] = (st, self.t)
         self.finish(0.8)
+        self.pill = ctx.pill
         self.plural = [pill(g, [(sg, "Bold", 50, TEAL), ("  →  ", "Bold", 42, MUTED), (sg, "Bold", 50, TEAL),
                                 (suf, "ExtraBold", 50, RED), (f"   {de}", "Medium", 34, MUTED)], h=92)
                        for sg, suf, de in PLURAL]
@@ -132,6 +141,10 @@ class NumbersScene(Scene):
     def render(self, t):
         f = self.g.bg.copy()
         self.heading(f, "Bonus 1: Zwei Augen – iki göz", y=120, size=60)
+        first = self.m("pl0")[0]
+        if t < first + 0.3:  # während der Einleitung: großes Augenpaar
+            put_center(f, self.g.emoji("1f440", 320), W / 2, 560 + math.sin(t * 2) * 8,
+                       opacity=clamp(t / 0.4) * (1 - clamp((t - first) / 0.3)))
         for i, im in enumerate(self.plural):
             st = self.m(f"pl{i}")[0]
             if t >= st:
@@ -147,6 +160,7 @@ class NumbersScene(Scene):
                 col, row = i % 2, i // 2
                 put_center(f, im, 510 + col * 900, 640 + row * 165 + dy, opacity=op,
                            scale=1.03 if self.active(t, f"num{i}") else 1.0)
+        draw_narration(self, f, t, ["intro", "rule"])
         return f
 
 
@@ -170,6 +184,7 @@ class PossessiveScene(Scene):
             self.marks[f"row{i}"] = (st, self.t)
         self.say(ctx.DE("Der Vokal passt sich an, genau wie bei der Ich-Form der Verben."), "rule")
         self.finish(1.2)
+        self.pill = ctx.pill
         self.formula = pill(g, [("Nomen", "Bold", 50, TEAL), ("  +  ", "Bold", 44, MUTED), ("m", "ExtraBold", 58, RED),
                                 ("  (mit Vokal davor)   =   ", "Medium", 38, MUTED), ("mein / meine …", "SemiBold", 44, INK)],
                            h=106)
@@ -197,6 +212,7 @@ class PossessiveScene(Scene):
         if t >= self.m("rule")[0]:
             op, dy = appear(t, self.m("rule")[0])
             put_center(f, self.rule, W / 2, 900 + dy, opacity=op)
+        draw_narration(self, f, t, ["intro"])
         return f
 
 

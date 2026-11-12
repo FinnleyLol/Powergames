@@ -93,6 +93,18 @@ pip install sherpa-onnx
 python make_video.py --verify --takes 10  # Aussprache per Whisper prüfen, beste Aufnahme je Wort wählen
 ```
 
+### Zur Aussprache in diesem Video
+
+Jede türkische Aufnahme wurde mit Whisper geprüft (bis zu 20 Versuche je Wort, die klarste wird genommen).
+Einzelwörter werden dabei im Rahmen „Bu bir …“ gehört, weil Whisper isolierte Wörter sonst oft für
+englische Wörter hält. Ergebnis: **79 von 83** Aufnahmen wurden exakt erkannt.
+
+- *göğüs* spricht die Stimme als „gö-yüs“ (Schreibweise nur für die Stimme: „göyüs“). So klingt das ğ
+  zwischen ö und ü auch in der gesprochenen Sprache.
+- *kemik* (Knochen) wurde durch *kas* (Muskel) ersetzt: Die Stimme sagte in 48 Versuchen immer „kenik“.
+- Grenzfälle: Beim langsamen *deri* und bei *elim* hört die Erkennung manchmal „deli“ bzw. „elin“.
+  Achte dort besonders auf das **r** (Zungenspitze) und das **m** am Ende.
+
 ## Quellen und Lizenzen
 
 - **Türkische Stimme:** Piper TTS `tr_TR-dfki-medium` (Datensatz DFKI, CC BY-NC-SA 4.0, nur nicht-kommerziell)
