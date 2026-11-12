@@ -141,9 +141,15 @@ class Verifier:
         self.rec = sherpa_onnx.OfflineRecognizer.from_whisper(
             encoder=os.path.join(d, "small-encoder.int8.onnx"), decoder=os.path.join(d, "small-decoder.int8.onnx"),
             tokens=os.path.join(d, "small-tokens.txt"), language="tr", task="transcribe", num_threads=4)
+        self.carrier = None  # Aufnahme von „Bu bir“ (setzt Voice), Rahmen für Einzelwörter
 
     def check(self, text: str, audio: np.ndarray):
+        """Ohne Zusammenhang erfindet Whisper bei Einzelwörtern oft englische Wörter („Bridget“ für
+        vücut). Darum steht vor einzelnen Wörtern der türkische Rahmen „Bu bir …“ (Das ist ein …)."""
         pad = np.zeros(int(0.4 * SR), np.float32)
+        if self.carrier is not None and len(tr_words(text)) == 1:
+            audio = np.concatenate([self.carrier, np.zeros(int(0.12 * SR), np.float32), trim(audio)])
+            text = "Bu bir " + text
         s = self.rec.create_stream()
         s.accept_waveform(SR, np.concatenate([pad, audio, pad, pad]))
         self.rec.decode_stream(s)
@@ -165,6 +171,11 @@ class Voice:
         os.makedirs(self.dir, exist_ok=True)
         self.verifier, self.takes = verifier, takes
         self.report = []
+        if verifier is not None and verifier.carrier is None:
+            carrier = os.path.join(self.dir, f"{self.name}_carrier_bu_bir.wav")
+            if not os.path.exists(carrier):
+                self._synth("Bu bir", TR_SPEED, carrier)
+            verifier.carrier = trim(read_wav(carrier))
 
     def _synth(self, text: str, length_scale: float, path: str) -> None:
         from piper import SynthesisConfig
@@ -173,9 +184,10 @@ class Voice:
             self.voice.synthesize_wav(text, w, syn_config=SynthesisConfig(length_scale=length_scale))
         os.replace(path + ".part", path)
 
-    def _select(self, text: str, length_scale: float, path: str) -> None:
+    def _select(self, text: str, length_scale: float, path: str, expect: str) -> None:
         """Piper klingt bei jeder Synthese etwas anders: mehrere Aufnahmen erzeugen und die behalten,
-        die Whisper genau so versteht, wie sie geschrieben wird (sonst die ähnlichste)."""
+        die Whisper genau so versteht, wie sie geschrieben wird (sonst die ähnlichste).
+        expect = richtige Schreibweise, falls `text` nur für die Aussprache anders geschrieben ist."""
         best, tmps = None, []
         for take in range(self.takes):
             tmp = f"{path}.take{take}.wav"
@@ -184,7 +196,7 @@ class Voice:
                 os.replace(path, tmp)
             else:
                 self._synth(text, length_scale, tmp)
-            ok, ratio, heard = self.verifier.check(text, read_wav(tmp))
+            ok, ratio, heard = self.verifier.check(expect, read_wav(tmp))
             if best is None or (ok, ratio) > best[:2]:
                 best = (ok, ratio, heard, tmp, take + 1)
             if ok:
@@ -193,16 +205,17 @@ class Voice:
         for tmp in tmps:
             if os.path.exists(tmp):
                 os.remove(tmp)
-        info = {"text": text, "length_scale": length_scale, "heard": best[2], "exact": best[0],
+        info = {"text": expect, "spoken_as": text, "length_scale": length_scale, "heard": best[2], "exact": best[0],
                 "similarity": round(best[1], 3), "takes": len(tmps), "chosen": best[4]}
         with open(path + ".ok", "w", encoding="utf-8") as f:
             json.dump(info, f, ensure_ascii=False)
 
-    def say(self, text: str, length_scale: float = 1.0) -> np.ndarray:
+    def say(self, text: str, length_scale: float = 1.0, expect: str | None = None) -> np.ndarray:
+        """text = was die Stimme liest; expect = richtige Schreibweise für den Whisper-Check."""
         key = hashlib.sha1(f"{self.name}|{text}|{length_scale}".encode()).hexdigest()[:16]
         path = os.path.join(self.dir, f"{self.name}_{key}.wav")
         if self.verifier is not None and not os.path.exists(path + ".ok"):
-            self._select(text, length_scale, path)
+            self._select(text, length_scale, path, expect or text)
         elif not os.path.exists(path):
             self._synth(text, length_scale, path)
         if os.path.exists(path + ".ok"):
@@ -427,8 +440,9 @@ class Ctx:
         self.de = Voice(VOICE_DE, cache)
         self.sfx = make_sfx()
 
-    def TR(self, text, slow=False):
-        return self.tr.say(text, TR_SLOW if slow else TR_SPEED)
+    def TR(self, text, slow=False, expect=None):
+        """Türkisch sprechen. expect: richtige Schreibweise, wenn `text` nur der Aussprache wegen anders ist."""
+        return self.tr.say(text, TR_SLOW if slow else TR_SPEED, expect)
 
     def DE(self, text):
         return self.de.say(text, DE_SPEED)

@@ -23,6 +23,10 @@ class Noun:
     stress: int        # Index der betonten Silbe
     note: str = ""     # Tipp
     de_say: str = ""   # Was die deutsche Stimme sagt (falls abweichend)
+    tr_say: str = ""   # Schreibweise nur für die türkische Stimme (falls sie das Wort sonst undeutlich spricht)
+
+    def speak(self, ctx, slow=False):
+        return ctx.TR((self.tr_say or self.tr) + ".", slow=slow, expect=self.tr + ".")
 
 
 @dataclass
@@ -211,9 +215,9 @@ class CardScene(Scene):
         self.wait(0.55)
         self.say(ctx.DE(n.de_say or n.de), "de")
         self.wait(0.4)
-        self.say(ctx.TR(n.tr + "."), "tr")
+        self.say(n.speak(ctx), "tr")
         self.wait(0.55)
-        slow = ctx.TR(n.tr + ".", slow=True)
+        slow = n.speak(ctx, slow=True)
         self.say(slow, "slow")
         self.wait(0.15)
         rep = max(2.4, 1.3 * len(slow) / SR + 1.2)
@@ -358,9 +362,9 @@ class QuizScene(Scene):
             self.sfx("tick", at=self.t + 0.3 + i)
         self.wait(self.COUNT + 0.6)
         self.sfx("ding")
-        self.say(ctx.TR(n.tr + "."), "tr")
+        self.say(n.speak(ctx), "tr")
         self.wait(0.4)
-        self.say(ctx.TR(n.tr + ".", slow=True), "slow")
+        self.say(n.speak(ctx, slow=True), "slow")
         self.span("speak", 1.8)
         self.wait(1.8)
         self.finish(0.2)

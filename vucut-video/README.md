@@ -44,7 +44,7 @@ Die MP4-Datei hat Kapitelmarken, so kannst du in Playern wie VLC direkt zu einem
 |---|---|---|---|
 | der Hals | **boyun** | bo · **jun** | y = „j“ |
 | die Schulter | **omuz** | o · **mus** | z = weiches s |
-| die Brust | **göğüs** | gö · **üs** | ğ zwischen ö und ü: fast stumm |
+| die Brust | **göğüs** | gö · **jüs** | ğ klingt hier wie ein leichtes j |
 | der Rücken | **sırt** | **sırt** | ı = dumpfes i, wie das e in „bitte“ |
 | der Bauch | **karın** | ka · **rın** | Karnım aç = Ich habe Hunger |
 | der Arm | **kol** | **kol** |  |
@@ -63,7 +63,7 @@ Die MP4-Datei hat Kapitelmarken, so kannst du in Playern wie VLC direkt zu einem
 | der Zeh | **ayak parmağı** | a · **jak** · par · ma · ı | wörtlich: Fuß-Finger |
 | das Herz | **kalp** | **kalp** |  |
 | das Gehirn | **beyin** | be · **jin** | y = „j“ |
-| der Knochen | **kemik** | ke · **mik** |  |
+| der Muskel | **kas** | **kas** | s ist im Türkischen immer scharf, wie „ß“ |
 | das Blut | **kan** | **kan** |  |
 | die Haut | **deri** | de · **ri** | deri heißt auch: das Leder |
 

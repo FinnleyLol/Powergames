@@ -51,7 +51,7 @@ CHAPTERS = [
     Chapter("Gövde ve kollar", "Rumpf & Arme", "1f9cd", [
         N("der Hals", "boyun", "1f9e3", ["bo", "jun"], 1, "y = „j“"),
         N("die Schulter", "omuz", "1f937", ["o", "mus"], 1, "z = weiches s"),
-        N("die Brust", "göğüs", "1f455", ["gö", "üs"], 1, "ğ zwischen ö und ü: fast stumm"),
+        N("die Brust", "göğüs", "1f455", ["gö", "jüs"], 1, "ğ klingt hier wie ein leichtes j", tr_say="göyüs"),
         N("der Rücken", "sırt", "1f392", ["sırt"], 0, "ı = dumpfes i, wie das e in „bitte“"),
         N("der Bauch", "karın", "1f930", ["ka", "rın"], 1, "Karnım aç = Ich habe Hunger"),
         N("der Arm", "kol", "1f4aa", ["kol"], 0),
@@ -67,7 +67,7 @@ CHAPTERS = [
         N("der Zeh", "ayak parmağı", "1f463", ["a", "jak", "par", "ma", "ı"], 1, "wörtlich: Fuß-Finger"),
         N("das Herz", "kalp", "1fac0", ["kalp"], 0),
         N("das Gehirn", "beyin", "1f9e0", ["be", "jin"], 1, "y = „j“"),
-        N("der Knochen", "kemik", "1f9b4", ["ke", "mik"], 1),
+        N("der Muskel", "kas", "1f3cb", ["kas"], 0, "s ist im Türkischen immer scharf, wie „ß“"),
         N("das Blut", "kan", "1fa78", ["kan"], 0),
         N("die Haut", "deri", "1f9f4", ["de", "ri"], 1, "deri heißt auch: das Leder"),
     ]),
