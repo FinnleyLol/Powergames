@@ -79,11 +79,25 @@ def download(url: str, path: str) -> None:
             time.sleep(2 ** (attempt + 1))
 
 
+EXTRA_ICON_DIRS: list = []  # Ordner mit eigenen SVG-Bildern (Name „x-….svg“), z. B. für Möbel ohne Emoji
+
+
+def icon_path(cache: str, code: str) -> str:
+    if code.startswith("x-"):
+        for d in EXTRA_ICON_DIRS:
+            p = os.path.join(d, code + ".svg")
+            if os.path.exists(p):
+                return p
+        raise FileNotFoundError(f"Eigenes Bild {code}.svg nicht gefunden in {EXTRA_ICON_DIRS}")
+    return os.path.join(cache, "emoji", code + ".svg")
+
+
 def ensure_assets(cache: str, emoji_codes) -> None:
     for name in ["Poppins-ExtraBold", "Poppins-Bold", "Poppins-SemiBold", "Poppins-Medium", "Poppins-Regular"]:
         download(FONT_URL.format(name), os.path.join(cache, "fonts", name + ".ttf"))
     for code in sorted(set(emoji_codes) | set(BASE_ICONS)):
-        download(TWEMOJI_URL.format(code), os.path.join(cache, "emoji", code + ".svg"))
+        if not code.startswith("x-"):  # „x-…“ = eigene Zeichnung aus EXTRA_ICON_DIRS
+            download(TWEMOJI_URL.format(code), os.path.join(cache, "emoji", code + ".svg"))
     for voice in (VOICE_TR, VOICE_DE):
         vdir = os.path.join(cache, "voices")
         onnx = os.path.join(vdir, voice + ".onnx")
@@ -305,8 +319,7 @@ class Gfx:
         if key not in self._emoji:
             import cairosvg
 
-            png = cairosvg.svg2png(url=os.path.join(self.cache, "emoji", code + ".svg"),
-                                   output_width=size, output_height=size)
+            png = cairosvg.svg2png(url=icon_path(self.cache, code), output_width=size, output_height=size)
             self._emoji[key] = Image.open(io.BytesIO(png)).convert("RGBA")
         return self._emoji[key]
 

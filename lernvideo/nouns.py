@@ -36,6 +36,32 @@ class Noun:
         return ctx.TR((self.tr_say or self.tr) + ".", slow=slow, expect=self.tr + ".")
 
 
+VOWELS = set("aeiouyøœɯɪʊɛæɔə")
+
+
+def voice_stress(ctx, text):
+    """(Anzahl Silben, betonte Silbe) so, wie die türkische Stimme das Wort betont (aus der Lautschrift)."""
+    ph = "".join(sum(ctx.tr.voice.phonemize(text), []))
+    n, stress = 0, None
+    for ch in ph:
+        if ch == "ˈ" and stress is None:
+            stress = n
+        if ch in VOWELS:
+            n += 1
+    return n, stress
+
+
+def fill_stress(ctx, items):
+    """Setzt bei Wörtern ohne Angabe (stress=None) die betonte Silbe passend zur Stimme, damit
+    Aussprache-Hinweis und Ton nie widersprechen."""
+    for it in items:
+        if it.stress is None:
+            n, s = voice_stress(ctx, it.tr_say or it.tr)
+            if n != len(it.syl) or s is None:
+                raise ValueError(f"Silben von „{it.tr}“ passen nicht zur Stimme: {it.syl} vs. {n} Silben")
+            it.stress = s
+
+
 @dataclass
 class Chapter:
     tr: str
