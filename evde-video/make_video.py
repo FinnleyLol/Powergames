@@ -4,13 +4,13 @@ Lernvideo „Evde – Einrichtung“: 25 Wörter für Möbel und Dinge in der Wo
 mit Aussprache.
 
 Erzeugt ein 1080p-MP4 mit:
-  * 25 Wortkarten in 4 Kapiteln (Wohnzimmer, Schlafzimmer, Küche & Bad, in jedem Zimmer)
+  * 25 Wortkarten in 3 Kapiteln (Wohnzimmer, Schlafzimmer, Küche & Bad)
   * Bonus 1: Wo? -da / -de / -ta / -te (masada = auf dem Tisch, yatakta = im Bett)
   * Bonus 2: Kedi nerede? – auf / unter / neben dem Tisch (mit Animation)
   * Bonus 3: var / yok – es gibt / es gibt nicht
   * Quiz, Übersicht, Abschluss
 
-Für Möbel ohne Emoji (Tisch, Teppich, Vorhang, Kissen, Schrank, Kühlschrank …) liegen eigene
+Für Möbel ohne Emoji (Tisch, Teppich, Vorhang, Kissen, Schrank, Kühlschrank, Herd …) liegen eigene
 Zeichnungen in icons/ (Name „x-….svg“). Die Betonung in den Aussprache-Hinweisen wird aus der
 Lautschrift der Stimme übernommen, damit Bild und Ton immer zusammenpassen.
 
@@ -49,6 +49,7 @@ CHAPTERS = [
         N("der Vorhang", "perde", "x-curtain", ["per", "de"], None, "perde heißt auch: der Vorhang im Theater"),
         N("das Bücherregal", "kitaplık", "x-bookshelf", ["ki", "tap", "lık"], None, "kitap = das Buch → kitaplık"),
         N("der Fernseher", "televizyon", "1f4fa", ["te", "le", "wis", "jon"], None, "v ≈ w  ·  z = weiches s"),
+        N("das Bild", "tablo", "1f5bc", ["tab", "lo"], None, "tablo heißt auch: die Tabelle"),
     ]),
     Chapter("Yatak odası", "Schlafzimmer", "1f6cf", [
         N("das Bett", "yatak", "1f6cf", ["ja", "tak"], None, "y = „j“"),
@@ -64,15 +65,13 @@ CHAPTERS = [
         N("der Kühlschrank", "buzdolabı", "x-fridge", ["bus", "do", "la", "bı"], None,
           "wörtlich: Eis-Schrank (buz + dolap)"),
         N("der Backofen", "fırın", "x-oven", ["fı", "rın"], None, "fırın heißt auch: die Bäckerei"),
+        N("der Herd", "ocak", "x-stove", ["o", "dschak"], None, "c = „dsch“  ·  Ocak heißt auch: Januar!"),
+        N("die Waschmaschine", "çamaşır makinesi", "x-washer", ["tscha", "ma", "schır", "_ma", "ki", "ne", "si"], None,
+          "çamaşır = die Wäsche  ·  makine = die Maschine"),
         N("das Waschbecken", "lavabo", "x-sink", ["la", "wa", "bo"], None, "v ≈ w"),
         N("die Badewanne", "küvet", "1f6c1", ["kü", "wet"], None, "v ≈ w"),
-        N("die Dusche", "duş", "1f6bf", ["dusch"], None, "ş = „sch“  ·  fast wie „Dusche“!"),
+        N("die Dusche", "duş", "1f6bf", ["dusch"], 0, "ş = „sch“  ·  u wie in „Dusche“, nicht ö!", tr_say="duuş"),
         N("die Toilette", "tuvalet", "1f6bd", ["tu", "wa", "let"], None, "fast wie „Toilette“"),
-    ]),
-    Chapter("Her odada", "In jedem Zimmer", "1f3e0", [
-        N("die Tür", "kapı", "1f6aa", ["ka", "pı"], None, "ı = dumpfes i"),
-        N("das Fenster", "pencere", "1fa9f", ["pen", "dsche", "re"], None, "c = „dsch“"),
-        N("die Wand", "duvar", "x-wall", ["du", "war"], None, "v ≈ w"),
     ]),
 ]
 ALL = [n for ch in CHAPTERS for n in ch.items]
@@ -88,8 +87,8 @@ VAR_YOK = [("Odada bir yatak var.", "Im Zimmer gibt es ein Bett.", "1f6cf"),
            ("Mutfakta bir buzdolabı var.", "In der Küche gibt es einen Kühlschrank.", "x-fridge"),
            ("Banyoda küvet yok.", "Im Bad gibt es keine Badewanne.", "1f6c1"),
            ("Evde televizyon yok.", "Zu Hause gibt es keinen Fernseher.", "1f4fa")]
-QUIZ = ["masa", "sandalye", "lamba", "ayna", "yatak", "dolap", "kapı", "pencere", "buzdolabı", "halı"]
-FLOATERS = ["1fa91", "1f6cb", "1f6cf", "1fa9e", "1f4fa", "1f6aa", "x-lamp", "1f570"]
+QUIZ = ["masa", "sandalye", "lamba", "ayna", "yatak", "dolap", "buzdolabı", "halı", "ocak", "tablo"]
+FLOATERS = ["1fa91", "1f6cb", "1f6cf", "1fa9e", "1f4fa", "x-washer", "x-lamp", "1f570"]
 ICONS = ["1f408", "1f4cc", "1f3e0"]
 
 

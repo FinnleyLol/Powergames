@@ -224,12 +224,20 @@ def card_base(ctx: Ctx):
 
 
 def pron_layer(g: Gfx, n: Noun):
-    segs = [("Aussprache:  ", "Medium", 36, MUTED)]
-    for i, s in enumerate(n.syl):
-        if i:
-            segs.append((" · ", "Medium", 50, MUTED))
-        segs.append((s, "Bold", 54, RED if i == n.stress else INK))
-    return pill(g, segs, h=96, padx=30)
+    """Aussprache-Hinweis. Eine Silbe mit „_“ davor beginnt ein neues Wort (breiterer Abstand).
+    Passt der Hinweis nicht in die Spalte, wird die Schrift kleiner."""
+    k = 1.0
+    while True:
+        segs = [("Aussprache:  ", "Medium", int(36 * k), MUTED)]
+        for i, s in enumerate(n.syl):
+            new_word = s.startswith("_")
+            if i:
+                segs.append(("   " if new_word else " · ", "Medium", int(50 * k), MUTED))
+            segs.append((s.lstrip("_"), "Bold", int(54 * k), RED if i == n.stress else INK))
+        im = pill(g, segs, h=96, padx=30)
+        if im.width - 2 * im.pad <= RW or k < 0.6:
+            return im
+        k -= 0.05
 
 
 def note_layer(g: Gfx, text):

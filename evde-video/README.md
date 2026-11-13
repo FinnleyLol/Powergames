@@ -11,7 +11,7 @@ und **es gibt / es gibt nicht** (*var / yok*).
 | Teil | Inhalt |
 |---|---|
 | Merhaba | *ev* = das Haus, *evde* = zu Hause |
-| Bölüm 1–4 | 25 Wortkarten: Wohnzimmer (9), Schlafzimmer (7), Küche & Bad (6), in jedem Zimmer (3) |
+| Bölüm 1–3 | 25 Wortkarten: Wohnzimmer (10), Schlafzimmer (7), Küche & Bad (8) |
 | Bonus 1 | **Wo?** Wort + *-da / -de* (nach ç f h k p s ş t: *-ta / -te*): *masada, odada, evde, yatakta, dolapta* |
 | Bonus 2 | **Kedi nerede?** Die Katze springt auf, unter und neben den Tisch: *üstünde, altında, yanında* |
 | Bonus 3 | ***var / yok***: *Odada bir yatak var.* · *Banyoda küvet yok.* |
@@ -38,6 +38,7 @@ Achtung bei *masa* und *çekmece*: Diese Lehnwörter werden **vorn** betont.
 | der Vorhang | **perde** | per · **de** | perde heißt auch: der Vorhang im Theater |
 | das Bücherregal | **kitaplık** | ki · tap · **lık** | kitap = das Buch → kitaplık |
 | der Fernseher | **televizyon** | te · le · wis · **jon** | v ≈ w · z = weiches s |
+| das Bild | **tablo** | tab · **lo** | tablo heißt auch: die Tabelle |
 
 ### 2. Yatak odası – Schlafzimmer
 
@@ -57,18 +58,15 @@ Achtung bei *masa* und *çekmece*: Diese Lehnwörter werden **vorn** betont.
 |---|---|---|---|
 | der Kühlschrank | **buzdolabı** | bus · do · la · **bı** | wörtlich: Eis-Schrank (buz + dolap) |
 | der Backofen | **fırın** | fı · **rın** | fırın heißt auch: die Bäckerei |
+| der Herd | **ocak** | o · **dschak** | c = „dsch“ · Ocak heißt auch: Januar! |
+| die Waschmaschine | **çamaşır makinesi** | tscha · ma · **schır**   ma · ki · ne · si | çamaşır = die Wäsche · makine = die Maschine |
 | das Waschbecken | **lavabo** | la · wa · **bo** | v ≈ w |
 | die Badewanne | **küvet** | kü · **wet** | v ≈ w |
-| die Dusche | **duş** | **dusch** | ş = „sch“ · fast wie „Dusche“! |
+| die Dusche | **duş** | **dusch** | ş = „sch“ · u wie in „Dusche“, nicht ö! |
 | die Toilette | **tuvalet** | tu · wa · **let** | fast wie „Toilette“ |
 
-### 4. Her odada – In jedem Zimmer
-
-| Deutsch | Türkisch | Aussprache (betonte Silbe **fett**) | Tipp |
-|---|---|---|---|
-| die Tür | **kapı** | ka · **pı** | ı = dumpfes i |
-| das Fenster | **pencere** | pen · dsche · **re** | c = „dsch“ |
-| die Wand | **duvar** | du · **war** | v ≈ w |
+**Zur Aussprache:** *duş* spricht die Stimme mit leicht langem u („duuş“). Sonst klang es wie „döş“.
+Richtig ist ein kurzes, klares **u** wie in „Dusche“.
 
 ## Bonus-Regeln
 
@@ -84,7 +82,7 @@ Neue kleine Wörter: *oda* = das Zimmer · *mutfak* = die Küche · *banyo* = da
 ## Bilder
 
 Für Möbel, die es nicht als Emoji gibt (Tisch, Sessel, Teppich, Lampe, Vorhang, Bücherregal, Kissen, Decke,
-Schrank, Schublade, Kühlschrank, Backofen, Waschbecken, Wand), liegen eigene Zeichnungen im Ordner
+Schrank, Schublade, Kühlschrank, Backofen, Herd, Waschmaschine, Waschbecken), liegen eigene Zeichnungen im Ordner
 [`icons/`](icons/) (SVG im Twemoji-Stil). Die übrigen Bilder sind Twemoji.
 
 ## Video selbst neu erzeugen
