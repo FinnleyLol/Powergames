@@ -10,6 +10,7 @@ Lernvideos für Deutschsprachige, die Türkisch lernen, mit türkischer Aussprac
 | [Hava – Wetter](hava-video/) | 36 Wetter-Wörter (Nomen, Adjektive, Verben), Adjektive benutzen & konjugieren | ca. 11 min |
 | [Evde – Einrichtung](evde-video/) | 25 Möbel & Geräte in der Wohnung, *-da/-de* (wo?), auf/unter/neben, *var/yok* | ca. 7 min |
 | [Aile – Familie](aile-video/) | 20 Familien-Wörter, Mamas/Papas Seite, *annem* (meine Mutter), *Kaç kardeşin var?* | ca. 7 min |
+| [Doğa – Natur](doga-video/) | 40 Natur-Wörter (Land, Pflanzen, Gewässer, Himmel), Gegensätze, Sätze in der Natur | ca. 8 min |
 
 Die Videos liegen jeweils im Ordner `output/`. Die Wortlisten stehen in den READMEs der Ordner.
 

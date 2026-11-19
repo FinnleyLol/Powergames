@@ -194,10 +194,23 @@ class Voice:
             verifier.carrier = trim(read_wav(carrier))
 
     def _synth(self, text: str, length_scale: float, path: str) -> None:
+        """text = normaler Text oder „[[Lautschrift]]“ (IPA wie von espeak), z. B. „[[denˈɪz.]]“, um die
+        Betonung zu korrigieren, wenn die Stimme ein Wort falsch betont."""
         from piper import SynthesisConfig
 
-        with wave.open(path + ".part", "wb") as w:
-            self.voice.synthesize_wav(text, w, syn_config=SynthesisConfig(length_scale=length_scale))
+        cfg = SynthesisConfig(length_scale=length_scale)
+        if text.startswith("[[") and text.endswith("]]"):
+            ids = self.voice.phonemes_to_ids(list(text[2:-2]))
+            audio = np.asarray(self.voice.phoneme_ids_to_audio(ids, cfg), np.float32)
+            audio = audio / max(1e-8, float(np.abs(audio).max()))
+            with wave.open(path + ".part", "wb") as w:
+                w.setnchannels(1)
+                w.setsampwidth(2)
+                w.setframerate(SR)
+                w.writeframes((np.clip(audio, -1, 1) * 32767).astype(np.int16).tobytes())
+        else:
+            with wave.open(path + ".part", "wb") as w:
+                self.voice.synthesize_wav(text, w, syn_config=cfg)
         os.replace(path + ".part", path)
 
     def _select(self, text: str, length_scale: float, path: str, expect: str) -> None:

@@ -33,7 +33,9 @@ class Noun:
     sent_hl: str = ""     # Teil des Satzes, der rot markiert wird
 
     def speak(self, ctx, slow=False):
-        return ctx.TR((self.tr_say or self.tr) + ".", slow=slow, expect=self.tr + ".")
+        say = self.tr_say or self.tr
+        say = say[:-2] + ".]]" if say.startswith("[[") else say + "."  # „[[Lautschrift]]“ = korrigierte Betonung
+        return ctx.TR(say, slow=slow, expect=self.tr + ".")
 
 
 VOWELS = set("aeiouyøœɯɪʊɛæɔə")
@@ -41,7 +43,10 @@ VOWELS = set("aeiouyøœɯɪʊɛæɔə")
 
 def voice_stress(ctx, text):
     """(Anzahl Silben, betonte Silbe) so, wie die türkische Stimme das Wort betont (aus der Lautschrift)."""
-    ph = "".join(sum(ctx.tr.voice.phonemize(text), []))
+    if text.startswith("[[") and text.endswith("]]"):
+        ph = text[2:-2]
+    else:
+        ph = "".join(sum(ctx.tr.voice.phonemize(text), []))
     n, stress = 0, None
     for ch in ph:
         if ch == "ˈ" and stress is None:
