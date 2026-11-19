@@ -79,6 +79,13 @@ Eine fremde ältere Frau sprichst du oft mit *teyze* an, einen älteren Mann mit
 babaanne*) ist im Video **keine Silbe rot markiert**. Viele Sprecher betonen diese Wörter vorn (z. B. ***an**ne*,
 ***tey**ze*), die Computerstimme aber oft hinten. Hör am besten auf echte Sprecher.
 
+**Aussprache-Check:** 53 von 59 türkischen Aufnahmen wurden von Whisper exakt erkannt. Unsicher bleibt
+***oğul*** (Sohn): Kein Durchgang wurde exakt erkannt, auch nicht mit den beiden anderen türkischen
+Computerstimmen. Die Erkennung rät dabei sehr unterschiedlich („oğuz“, „olay“ …), was eher auf die Erkennung
+als auf die Stimme hindeutet. Richtig klingt es so: **o-ul**, das ğ ist stumm, das **l** am Ende deutlich.
+Im Alltag hörst du fast immer *oğlum* (mein Sohn). Bei *kızım* hört die Erkennung manchmal „kızın“:
+Achte auf das **m** am Ende.
+
 ## Bonus-Regeln
 
 | Regel | Beispiele |
