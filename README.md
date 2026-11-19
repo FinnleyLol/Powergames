@@ -9,6 +9,7 @@ Lernvideos für Deutschsprachige, die Türkisch lernen, mit türkischer Aussprac
 | [Vücut – Körperteile](vucut-video/) | 30 Körperteile, *iki göz*, *başım* (mein Kopf), *… ağrıyor* (tut weh) | ca. 7 min |
 | [Hava – Wetter](hava-video/) | 36 Wetter-Wörter (Nomen, Adjektive, Verben), Adjektive benutzen & konjugieren | ca. 11 min |
 | [Evde – Einrichtung](evde-video/) | 25 Möbel & Geräte in der Wohnung, *-da/-de* (wo?), auf/unter/neben, *var/yok* | ca. 7 min |
+| [Aile – Familie](aile-video/) | 20 Familien-Wörter, Mamas/Papas Seite, *annem* (meine Mutter), *Kaç kardeşin var?* | ca. 7 min |
 
 Die Videos liegen jeweils im Ordner `output/`. Die Wortlisten stehen in den READMEs der Ordner.
 

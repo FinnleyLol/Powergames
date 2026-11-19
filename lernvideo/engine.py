@@ -95,7 +95,9 @@ def icon_path(cache: str, code: str) -> str:
 def ensure_assets(cache: str, emoji_codes) -> None:
     for name in ["Poppins-ExtraBold", "Poppins-Bold", "Poppins-SemiBold", "Poppins-Medium", "Poppins-Regular"]:
         download(FONT_URL.format(name), os.path.join(cache, "fonts", name + ".ttf"))
-    for code in sorted(set(emoji_codes) | set(BASE_ICONS)):
+    parts = {p for code in set(emoji_codes) | set(BASE_ICONS)  # „a+b“ / „a&b&c“ = zusammengesetzt
+             for p in code.replace("&", "+").split("+")}
+    for code in sorted(parts):
         if not code.startswith("x-"):  # „x-…“ = eigene Zeichnung aus EXTRA_ICON_DIRS
             download(TWEMOJI_URL.format(code), os.path.join(cache, "emoji", code + ".svg"))
     for voice in (VOICE_TR, VOICE_DE):
@@ -315,12 +317,38 @@ class Gfx:
         return self.font(weight, size)
 
     def emoji(self, code: str, size: int) -> Image.Image:
+        """Twemoji oder eigene Zeichnung. „haupt+abzeichen“ setzt zwei Bilder zusammen: das erste groß,
+        das zweite klein in einem weißen Kreis oben rechts (z. B. Oma + Mama = Mamas Mutter)."""
         key = (code, size)
         if key not in self._emoji:
-            import cairosvg
+            if "&" in code:  # Gruppe: die ersten zwei groß hinten, der Rest klein davor
+                parts = code.split("&")
+                im = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+                layouts = {2: [(0.0, 0.02, 0.72), (0.48, 0.46, 0.52)],
+                           3: [(0.0, 0.02, 0.58), (0.42, 0.02, 0.58), (0.25, 0.48, 0.50)],
+                           4: [(0.0, 0.02, 0.56), (0.44, 0.02, 0.56), (0.06, 0.54, 0.44), (0.50, 0.54, 0.44)]}
+                for part, (x, y, k) in zip(parts, layouts[len(parts)]):
+                    e = self.emoji(part, int(size * k))
+                    im.alpha_composite(e, (int(size * x), int(size * y)))
+                self._emoji[key] = im
+            elif "+" in code:
+                main, badge = code.split("+", 1)
+                im = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+                m = self.emoji(main, int(size * 0.84))
+                im.alpha_composite(m, (0, size - m.height))
+                bs = int(size * 0.46)
+                ring = Image.new("RGBA", (bs, bs), (0, 0, 0, 0))
+                d = ImageDraw.Draw(ring)
+                d.ellipse([0, 0, bs - 1, bs - 1], fill=(255, 255, 255, 255), outline=LINE, width=max(2, bs // 30))
+                b = self.emoji(badge, int(bs * 0.74))
+                ring.alpha_composite(b, ((bs - b.width) // 2, (bs - b.height) // 2))
+                im.alpha_composite(ring, (size - bs, 0))
+                self._emoji[key] = im
+            else:
+                import cairosvg
 
-            png = cairosvg.svg2png(url=icon_path(self.cache, code), output_width=size, output_height=size)
-            self._emoji[key] = Image.open(io.BytesIO(png)).convert("RGBA")
+                png = cairosvg.svg2png(url=icon_path(self.cache, code), output_width=size, output_height=size)
+                self._emoji[key] = Image.open(io.BytesIO(png)).convert("RGBA")
         return self._emoji[key]
 
     def _background(self) -> Image.Image:
