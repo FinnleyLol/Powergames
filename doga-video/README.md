@@ -95,6 +95,11 @@ hat die Stimme falsch betont oder Silben verschluckt. Dort spricht sie jetzt aus
 de·**niz**, yıl·**dız**, aa·**atsch**. Bei *tohum* und *şelale* klang die Korrektur schlechter. Dort ist keine
 Silbe markiert, und die Stimme betont etwas zu früh (richtig: to·**hum**, sche·la·**le**).
 
+**Aussprache-Check:** 86 von 101 türkischen Aufnahmen wurden von Whisper exakt erkannt. Die meisten
+Abweichungen sind richtige Aussprache, die nur anders geschrieben wird: *dağ* → „da“ (das ğ macht das a lang),
+*plaj* → „plaş“ (am Wortende stimmlos), *sığ dere* → „Sıdere“. *doğa* und *tepe* hört die Erkennung als
+Einzelwort manchmal falsch, im Satz aber sicher (*Doğa çok güzel.* 8 von 8, *Tepe çok yüksek.* 6 von 8).
+
 ## Bonus 1: Gegensätze
 
 | Adjektiv | Beispiel | Gegenteil | Beispiel |
