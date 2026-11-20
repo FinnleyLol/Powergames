@@ -6,6 +6,8 @@ ist und sich ruhig und fließend bewegt.
 
 ▶️ **Video:** [`output/karopapier_hintergrund_50s.mp4`](output/karopapier_hintergrund_50s.mp4)
 
+![Standbild aus dem Video](vorschau.jpg)
+
 | | |
 |---|---|
 | Länge | 50 Sekunden, **nahtlos loopbar** (letztes Bild geht direkt ins erste über) |
