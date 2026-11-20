@@ -35,7 +35,7 @@ INK = np.array([48, 74, 116], np.float32)       # dunkelblaue Tinte
 # Gitter in "Papier-Pixeln" (Referenzgröße 1080p, wird mit der Auflösung skaliert)
 CELL = 80                # Kästchengröße in der Bildmitte
 LINE = 3.4               # Strichstärke
-DRIFT_X, DRIFT_Y = 16, 8  # so viele Kästchen gleitet das Papier pro Loop
+DRIFT_X, DRIFT_Y = 24, 12  # so viele Kästchen gleitet das Papier pro Loop
 TILE_X, TILE_Y = DRIFT_X * CELL, DRIFT_Y * CELL   # Kachelgröße der Texturen
 
 
@@ -93,17 +93,17 @@ def motion(t):
     th = 2 * np.pi * t / DURATION
     return dict(
         th=th,
-        # Linsenwölbung atmet zweimal pro Loop
-        k=0.130 + 0.050 * np.sin(2 * th - 0.9) + 0.012 * np.sin(3 * th + 0.4),
+        # Linsenwölbung atmet dreimal pro Loop
+        k=0.130 + 0.050 * np.sin(3 * th - 0.9) + 0.012 * np.sin(5 * th + 0.4),
         # Linsenmitte wandert sanft (in halben Bildhöhen)
-        cx=0.11 * np.sin(th + 0.3) + 0.03 * np.sin(3 * th),
-        cy=0.07 * np.sin(2 * th + 1.1),
+        cx=0.11 * np.sin(2 * th + 0.3) + 0.03 * np.sin(5 * th),
+        cy=0.07 * np.sin(3 * th + 1.1),
         # Zoom und Drehung
-        zoom=1.0 + 0.055 * np.sin(th - 1.2) + 0.015 * np.sin(4 * th),
-        rot=0.040 * np.sin(th + 0.8) + 0.012 * np.sin(3 * th - 0.5),
+        zoom=1.0 + 0.055 * np.sin(2 * th - 1.2) + 0.015 * np.sin(6 * th),
+        rot=0.040 * np.sin(2 * th + 0.8) + 0.012 * np.sin(5 * th - 0.5),
         # Papier gleitet: stetige Drift + Schwingung (in Papier-Pixeln)
-        dx=TILE_X * t / DURATION + 1.25 * CELL * np.sin(th) + 0.3 * CELL * np.sin(3 * th + 2.0),
-        dy=TILE_Y * t / DURATION + 0.9 * CELL * np.sin(2 * th + 1.0),
+        dx=TILE_X * t / DURATION + 1.25 * CELL * np.sin(2 * th) + 0.15 * CELL * np.sin(5 * th + 2.0),
+        dy=TILE_Y * t / DURATION + 0.9 * CELL * np.sin(3 * th + 1.0),
     )
 
 
@@ -134,8 +134,8 @@ class Renderer:
         px, py = self.px, self.py
 
         # 1) sanfte, fließende Welle im Bildraum (wandernde Sinuswellen)
-        wx = 0.0085 * np.sin(2.2 * py + 0.5 * px + 2 * th) + 0.006 * np.sin(3.3 * py - 0.8 * px - 3 * th + 1.0)
-        wy = 0.0085 * np.sin(1.9 * px - 0.4 * py + 2 * th + 0.5) + 0.006 * np.sin(2.8 * px + 0.9 * py + 3 * th + 2.0)
+        wx = 0.0085 * np.sin(2.2 * py + 0.5 * px + 3 * th) + 0.006 * np.sin(3.3 * py - 0.8 * px - 5 * th + 1.0)
+        wy = 0.0085 * np.sin(1.9 * px - 0.4 * py + 3 * th + 0.5) + 0.006 * np.sin(2.8 * px + 0.9 * py + 5 * th + 2.0)
         qx = px + wx - m["cx"]
         qy = py + wy - m["cy"]
 
@@ -164,8 +164,8 @@ class Renderer:
         k = i % DRIFT_X
         v = P.vert
         lx = (i * CELL + v["off"][k]
-              + v["a1"][k] * np.sin(TWO_PI * 3 * Y / TILE_Y + v["p1"][k])
-              + v["a2"][k] * np.sin(TWO_PI * 13 * Y / TILE_Y + v["p2"][k]))
+              + v["a1"][k] * np.sin(TWO_PI * 4 * Y / TILE_Y + v["p1"][k])
+              + v["a2"][k] * np.sin(TWO_PI * 19 * Y / TILE_Y + v["p2"][k]))
         dv = np.abs(X - lx) / nX                      # Abstand in Bildpixeln
 
         # waagerechte Linien
@@ -173,8 +173,8 @@ class Renderer:
         k = j % DRIFT_Y
         hp = P.horz
         ly = (j * CELL + hp["off"][k]
-              + hp["a1"][k] * np.sin(TWO_PI * 5 * X / TILE_X + hp["p1"][k])
-              + hp["a2"][k] * np.sin(TWO_PI * 21 * X / TILE_X + hp["p2"][k]))
+              + hp["a1"][k] * np.sin(TWO_PI * 8 * X / TILE_X + hp["p1"][k])
+              + hp["a2"][k] * np.sin(TWO_PI * 31 * X / TILE_X + hp["p2"][k]))
         dh = np.abs(Y - ly) / nY
 
         # Strichstärke schwankt leicht wie bei einem Fineliner

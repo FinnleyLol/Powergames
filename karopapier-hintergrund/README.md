@@ -17,9 +17,9 @@ ist und sich ruhig und fließend bewegt.
 ## Die Bewegung
 
 - **Linsenwölbung**: Die Mitte wirkt nach vorne gewölbt, die Kästchen am Rand werden größer und
-  die Linien biegen sich nach außen. Die Wölbung „atmet“ zweimal pro Loop und die Linsenmitte
+  die Linien biegen sich nach außen. Die Wölbung „atmet“ dreimal pro Loop und die Linsenmitte
   wandert langsam.
-- **Gleiten**: Das Papier zieht stetig schräg durchs Bild, mit einer weichen Schwingung.
+- **Gleiten**: Das Papier zieht stetig schräg durchs Bild (24 × 12 Kästchen pro Loop), mit einer weichen Schwingung.
 - **Drehung & Zoom**: leicht hin und her (ca. ±3°, ±6 %).
 - **Flüssige Welle**: eine sanfte, wandernde Welle lässt die Linien leicht schwimmen.
 - **Handgezeichnet**: jede Linie hat kleine Unregelmäßigkeiten, die Strichstärke schwankt leicht
