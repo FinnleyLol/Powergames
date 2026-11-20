@@ -19,6 +19,7 @@ Die Videos liegen jeweils im Ordner `output/`. Die Wortlisten stehen in den READ
 | Video | Beschreibung | Länge |
 |---|---|---|
 | [Karopapier](karopapier-hintergrund/) | Motion-Graphics-Hintergrund: helles, gewölbtes Karopapier, fließend bewegt, nahtlos loopbar | 50 s |
+| [Lila Gitter](lila-gitter-hintergrund/) | Motion-Graphics-Hintergrund: dunkles, leuchtendes, gewölbtes Gitter mit lila Glow, nahtlos loopbar | 50 s |
 
 ## Technik
 
