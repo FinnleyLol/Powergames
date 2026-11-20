@@ -14,6 +14,12 @@ Lernvideos für Deutschsprachige, die Türkisch lernen, mit türkischer Aussprac
 
 Die Videos liegen jeweils im Ordner `output/`. Die Wortlisten stehen in den READMEs der Ordner.
 
+## Hintergründe
+
+| Video | Beschreibung | Länge |
+|---|---|---|
+| [Karopapier](karopapier-hintergrund/) | Motion-Graphics-Hintergrund: helles, gewölbtes Karopapier, fließend bewegt, nahtlos loopbar | 50 s |
+
 ## Technik
 
 - `lernvideo/engine.py`: gemeinsame Engine mit Stimmen (Piper TTS), optionalem Aussprache-Check (Whisper), Grafik, Szenen und Rendern (ffmpeg)
