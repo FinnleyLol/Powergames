@@ -4,7 +4,7 @@
 Leuchtendes Gitter auf dunklem Grund, wie durch eine Linse nach außen gewölbt,
 mit lila Note: violett getönter Hintergrund, lavendelweiße Linien mit lila Glow.
 
-* Linsenwölbung (Kissen-Verzeichnung), die "atmet" und langsam wandert
+* Linsenwölbung (Kissen-Verzeichnung), die "atmet" und wandert
 * das Gitter gleitet stetig schräg durchs Bild, mit einer weichen Schwingung
 * leichte Drehung und Zoom, sanfte flüssige Welle
 * der Glow-Farbton pendelt leicht zwischen Violett und Lila-Pink
@@ -41,7 +41,8 @@ CELL = 155                 # Kästchengröße in der Bildmitte (px)
 CORE_W = 3.2               # Breite des hellen Linienkerns (px)
 BLOOM = 2.6                # enger Schein um den Kern (Sigma, px)
 HALO = 13.5                # weiter Glow (Abfall-Länge, px)
-DRIFT_X, DRIFT_Y = 12, 6   # so viele Kästchen gleitet das Gitter pro Loop
+DRIFT_X, DRIFT_Y = 24, 12  # so viele Kästchen gleitet das Gitter pro Loop
+SHUTTER = 0.5              # Bewegungsunschärfe: Belichtung als Anteil eines Bildes (180°)
 
 
 def motion(t):
@@ -49,20 +50,20 @@ def motion(t):
     th = 2 * np.pi * t / DURATION
     return dict(
         th=th,
-        # Linsenwölbung atmet dreimal pro Loop
-        k=0.135 + 0.050 * np.sin(3 * th - 0.9) + 0.012 * np.sin(5 * th + 0.4),
+        # Linsenwölbung atmet fünfmal pro Loop
+        k=0.135 + 0.050 * np.sin(5 * th - 0.9) + 0.012 * np.sin(8 * th + 0.4),
         # Linsenmitte wandert sanft (in halben Bildhöhen)
-        cx=0.11 * np.sin(2 * th + 0.3) + 0.03 * np.sin(5 * th),
-        cy=0.07 * np.sin(3 * th + 1.1),
+        cx=0.11 * np.sin(3 * th + 0.3) + 0.03 * np.sin(8 * th),
+        cy=0.07 * np.sin(5 * th + 1.1),
         # Zoom und Drehung
-        zoom=1.0 + 0.055 * np.sin(2 * th - 1.2) + 0.015 * np.sin(6 * th),
-        rot=0.040 * np.sin(2 * th + 0.8) + 0.012 * np.sin(5 * th - 0.5),
+        zoom=1.0 + 0.055 * np.sin(4 * th - 1.2) + 0.015 * np.sin(9 * th),
+        rot=0.040 * np.sin(3 * th + 0.8) + 0.012 * np.sin(8 * th - 0.5),
         # Gitter gleitet: stetige Drift + Schwingung (px @1080p)
-        dx=DRIFT_X * CELL * t / DURATION + 100 * np.sin(2 * th) + 12 * np.sin(5 * th + 2.0),
-        dy=DRIFT_Y * CELL * t / DURATION + 72 * np.sin(3 * th + 1.0),
+        dx=DRIFT_X * CELL * t / DURATION + 100 * np.sin(4 * th) + 12 * np.sin(8 * th + 2.0),
+        dy=DRIFT_Y * CELL * t / DURATION + 72 * np.sin(5 * th + 1.0),
         # Glow-Farbton pendelt (0 = Violett, 1 = Lila-Pink), Puls der Mitte
-        hue=0.5 + 0.5 * np.sin(2 * th - 0.4),
-        pulse=1.0 + 0.10 * np.sin(3 * th + 0.7),
+        hue=0.5 + 0.5 * np.sin(3 * th - 0.4),
+        pulse=1.0 + 0.10 * np.sin(5 * th + 0.7),
     )
 
 
@@ -82,15 +83,16 @@ class Renderer:
         rng = np.random.default_rng(3)
         self.dither = (rng.random((h, w, 1)) + rng.random((h, w, 1)) - 1.0).astype(np.float32) * 0.9
 
-    def frame(self, t):
+    def light(self, t):
+        """Ein Augenblick als Fließkomma-Bild (0..1)."""
         m = motion(t)
         th = m["th"]
         px, py = self.px, self.py
         s = self.s
 
         # 1) sanfte, fließende Welle im Bildraum
-        wx = 0.0085 * np.sin(2.2 * py + 0.5 * px + 3 * th) + 0.006 * np.sin(3.3 * py - 0.8 * px - 5 * th + 1.0)
-        wy = 0.0085 * np.sin(1.9 * px - 0.4 * py + 3 * th + 0.5) + 0.006 * np.sin(2.8 * px + 0.9 * py + 5 * th + 2.0)
+        wx = 0.0085 * np.sin(2.2 * py + 0.5 * px + 5 * th) + 0.006 * np.sin(3.3 * py - 0.8 * px - 8 * th + 1.0)
+        wy = 0.0085 * np.sin(1.9 * px - 0.4 * py + 5 * th + 0.5) + 0.006 * np.sin(2.8 * px + 0.9 * py + 8 * th + 2.0)
         qx = px + wx - m["cx"]
         qy = py + wy - m["cy"]
 
@@ -130,20 +132,32 @@ class Renderer:
         # weiche Schulter statt hartem Abschneiden (dunkle Töne bleiben unverändert)
         a = 0.72
         over = np.maximum(rgb - a, 0.0)
-        rgb = np.minimum(rgb, a) + (1 - a) * (1 - np.exp(-over / (1 - a)))
+        return np.minimum(rgb, a) + (1 - a) * (1 - np.exp(-over / (1 - a)))
+
+    def frame(self, t, fps=25, sub=1):
+        """Fertiges Bild; mit sub > 1 Bewegungsunschärfe aus mehreren Zwischenbildern."""
+        if sub <= 1:
+            rgb = self.light(t)
+        else:
+            span = SHUTTER / fps
+            rgb = sum(self.light(t + span * ((i + 0.5) / sub - 0.5)) for i in range(sub)) / sub
         return np.clip(rgb * 255.0 + self.dither + 0.5, 0, 255).astype(np.uint8)
 
 
 _R = None
 
 
-def _init(w, h):
-    global _R
+_FPS, _SUB = 25, 1
+
+
+def _init(w, h, fps, sub):
+    global _R, _FPS, _SUB
     _R = Renderer(w, h)
+    _FPS, _SUB = fps, sub
 
 
 def _render(t):
-    return _R.frame(t).tobytes()
+    return _R.frame(t, _FPS, _SUB).tobytes()
 
 
 def main():
@@ -153,6 +167,7 @@ def main():
     ap.add_argument("--fps", type=int, default=25)
     ap.add_argument("--seconds", type=float, default=DURATION)
     ap.add_argument("--crf", type=int, default=17)
+    ap.add_argument("--blur", type=int, default=4, help="Zwischenbilder für Bewegungsunschärfe (1 = aus)")
     ap.add_argument("--preview", action="store_true", help="960x540, 10 s, nach build/")
     ap.add_argument("--still", type=float, help="nur ein Einzelbild bei dieser Zeit (s) als PNG")
     ap.add_argument("--out", type=Path)
@@ -166,7 +181,7 @@ def main():
         from PIL import Image
         out = args.out or HERE / "build" / f"still_{args.still:05.2f}s.png"
         out.parent.mkdir(parents=True, exist_ok=True)
-        Image.fromarray(Renderer(args.width, args.height).frame(args.still)).save(out)
+        Image.fromarray(Renderer(args.width, args.height).frame(args.still, args.fps, args.blur)).save(out)
         print(out)
         return
 
@@ -188,7 +203,7 @@ def main():
     enc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
 
     t0 = time.time()
-    with mp.Pool(args.jobs, initializer=_init, initargs=(args.width, args.height)) as pool:
+    with mp.Pool(args.jobs, initializer=_init, initargs=(args.width, args.height, args.fps, args.blur)) as pool:
         for i, buf in enumerate(pool.imap(_render, times, chunksize=2)):
             enc.stdin.write(buf)
             if (i + 1) % 50 == 0 or i + 1 == n:

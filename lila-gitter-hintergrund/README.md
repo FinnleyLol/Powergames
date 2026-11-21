@@ -17,13 +17,14 @@ verlaufen ins Schwarze.
 
 ## Die Bewegung
 
-Gleiche Bewegung wie beim [Karopapier-Hintergrund](../karopapier-hintergrund/) (schnellere Version):
+Zügig und fließend (doppelt so schnell wie die erste Version):
 
-- **Linsenwölbung**, die dreimal pro Loop „atmet“, und eine langsam wandernde Linsenmitte
-- **Gleiten**: Das Gitter zieht stetig schräg durchs Bild (12 × 6 Kästchen pro Loop), mit weicher Schwingung
-- **Drehung & Zoom**: leicht hin und her (ca. ±3°, ±6 %)
-- **Flüssige Welle**: eine sanfte, wandernde Welle lässt die Linien leicht schwimmen
-- **Farbe**: Der Glow pendelt langsam zwischen Violett und Lila-Pink, das Licht in der Mitte pulsiert leicht
+- **Gleiten**: Das Gitter zieht schräg durchs Bild (24 × 12 Kästchen pro Loop, im Schnitt ca. 75 px/s), mit weicher Schwingung
+- **Linsenwölbung**, die fünfmal pro Loop „atmet“, und eine wandernde Linsenmitte
+- **Drehung & Zoom**: hin und her (ca. ±3°, ±6 %)
+- **Flüssige Welle**: eine wandernde Welle lässt die Linien leicht schwimmen
+- **Farbe**: Der Glow pendelt zwischen Violett und Lila-Pink, das Licht in der Mitte pulsiert leicht
+- **Bewegungsunschärfe** (4 Zwischenbilder, 180°-Shutter), damit die schnellen Linien bei 25 fps nicht ruckeln
 
 ## Selbst rendern / anpassen
 
@@ -32,9 +33,10 @@ pip install numpy pillow        # ffmpeg muss installiert sein
 python make_video.py            # volles Video nach output/
 python make_video.py --preview  # schnelle Vorschau (960x540, 10 s) nach build/
 python make_video.py --still 12.5               # Einzelbild als PNG
+python make_video.py --blur 1   # ohne Bewegungsunschärfe (rendert ca. 4x schneller)
 python make_video.py --width 3840 --height 2160 --out output/lila_gitter_4k.mp4   # 4K
 ```
 
-Farben (`BG`, `CORE`, `GLOW_A`, `GLOW_B`), Kästchengröße (`CELL`), Glow (`BLOOM`, `HALO`) und die
-Bewegung (`motion()`) stehen oben in [`make_video.py`](make_video.py). Damit der Loop nahtlos
+Farben (`BG`, `CORE`, `GLOW_A`, `GLOW_B`), Kästchengröße (`CELL`), Glow (`BLOOM`, `HALO`), Tempo
+(`DRIFT_X`, `DRIFT_Y`) und die Bewegung (`motion()`) stehen oben in [`make_video.py`](make_video.py). Damit der Loop nahtlos
 bleibt, in `motion()` nur ganzzahlige Vielfache von `th` verwenden.
