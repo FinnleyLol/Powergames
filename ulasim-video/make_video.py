@@ -54,7 +54,8 @@ CHAPTERS = [
     ]),
     Chapter("Yolda", "Unterwegs: Orte & Dinge", "1f6e3", [
         N("die Bushaltestelle", "otobüs durağı", "1f68f", ["o", "to", "büs", "_du", "raa", "ı"], None,
-          "durak = Haltestelle → otobüs durağı"),
+          "durak = Haltestelle → otobüs durağı",
+          tr_say="[[otobˈøs duɾaː ˈɯ]]"),  # sonst verschleift die Stimme „aı“ zu „e“ („düreği“)
         N("der Bahnhof", "tren istasyonu", "1f689", ["tren", "_is", "tas", "jo", "nu"], None, "auch: gar"),
         N("der Flughafen", "havalimanı", "1f6eb", ["ha", "wa", "li", "ma", "nı"], None,
           "wörtlich: Luft-Hafen (hava + liman)"),
@@ -110,7 +111,8 @@ class CompoundScene(Scene):
             self.wait(0.2)
             self.say(ctx.TR(w2 + "."))
             self.wait(0.3)
-            self.say(ctx.TR(f"{w1} {w2b}."))
+            n = BY_TR.get(f"{w1} {w2b}")  # gleiche (ggf. korrigierte) Aussprache wie auf der Wortkarte
+            self.say(n.speak(ctx) if n else ctx.TR(f"{w1} {w2b}."))
             self.wait(0.25)
             self.say(ctx.DE(de))
             self.wait(0.5)

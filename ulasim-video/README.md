@@ -65,6 +65,12 @@ Die MP4-Datei hat Kapitelmarken, so kannst du in Playern wie VLC direkt zu einem
 Die betonte Silbe stammt aus der Lautschrift der Stimme, damit Hinweis und Ton zusammenpassen. Bei
 zusammengesetzten Wörtern wird das **erste** Wort betont (o·to·**büs** du·raa·ı).
 
+**Zur Aussprache:** Bei *otobüs durağı* hat die Stimme das Ende „-ağı“ zu „-eği“ verschliffen („otobüs düreği“).
+Jetzt spricht sie es aus korrigierter Lautschrift: **du·raa·ı**, mit dunklem a und ı. Bei ***gemi*** (Schiff) und
+***liman*** (Hafen) spricht die Stimme das **m** bzw. das **l** am Anfang etwas schwach. Die Spracherkennung
+hat diese beiden Wörter einzeln nicht sicher erkannt. Richtig klingt es so: **ge·mi** mit deutlichem m und
+**li·man** mit klarem l am Anfang und n am Ende.
+
 ## Bonus 1: Zusammengesetzte Wörter
 
 Im Deutschen klebst du Wörter zusammen: Bus + Haltestelle = Bushaltestelle. Im Türkischen bleiben beide Wörter
