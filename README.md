@@ -11,6 +11,7 @@ Lernvideos für Deutschsprachige, die Türkisch lernen, mit türkischer Aussprac
 | [Evde – Einrichtung](evde-video/) | 25 Möbel & Geräte in der Wohnung, *-da/-de* (wo?), auf/unter/neben, *var/yok* | ca. 7 min |
 | [Aile – Familie](aile-video/) | 20 Familien-Wörter, Mamas/Papas Seite, *annem* (meine Mutter), *Kaç kardeşin var?* | ca. 7 min |
 | [Doğa – Natur](doga-video/) | 40 Natur-Wörter (Land, Pflanzen, Gewässer, Himmel), Gegensätze, Sätze in der Natur | ca. 8 min |
+| [Ulaşım – Verkehrsmittel](ulasim-video/) | 25 Wörter für unterwegs, *otobüs durağı*, *otobüsle* (mit dem Bus), Sätze an der Haltestelle | ca. 7 min |
 
 Die Videos liegen jeweils im Ordner `output/`. Die Wortlisten stehen in den READMEs der Ordner.
 
