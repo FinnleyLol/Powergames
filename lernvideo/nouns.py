@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 
 from .engine import *  # noqa: F401,F403
 
-NUM_WORDS = {1: "eins", 2: "zwei", 3: "drei", 4: "vier", 5: "fünf"}
+NUM_WORDS = {1: "eins", 2: "zwei", 3: "drei", 4: "vier", 5: "fünf", 6: "sechs", 7: "sieben"}
 
 
 @dataclass
