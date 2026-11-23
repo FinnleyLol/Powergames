@@ -162,8 +162,12 @@ DAYS = [("der Montag", "Pazartesi", ["pa", "sar", "te", "si"], "Pazar + ertesi =
         ("der Freitag", "Cuma", ["dschu", "ma"], "c = „dsch“  ·  Betonung vorne: DSCHU-ma"),
         ("der Samstag", "Cumartesi", ["dschu", "mar", "te", "si"], "Cuma + ertesi = Tag nach Freitag"),
         ("der Sonntag", "Pazar", ["pa", "sar"], "pazar heißt auch: der Markt")]
-CH1 = [N(de, tr, f"c-m-{i}", syl, None, note) for i, (de, tr, syl, note) in enumerate(MONTHS, 1)]
-CH2 = [N(de, tr, f"c-w-{i}", syl, None, note) for i, (de, tr, syl, note) in enumerate(DAYS, 1)]
+TR_SAY = {"Ekim": "[[ˈekimm]]",  # das m am Ende klang einzeln wie n („ekin“)
+          "Perşembe": "[[peɾɾʃembˈe]]"}  # sonst spricht die Stimme „taşambe“
+CH1 = [N(de, tr, f"c-m-{i}", syl, None, note, tr_say=TR_SAY.get(tr, ""))
+       for i, (de, tr, syl, note) in enumerate(MONTHS, 1)]
+CH2 = [N(de, tr, f"c-w-{i}", syl, None, note, tr_say=TR_SAY.get(tr, ""))
+       for i, (de, tr, syl, note) in enumerate(DAYS, 1)]
 CH3 = [N("der Tag", "gün", "1f305", ["gün"], None, "günaydın = Guten Morgen"),
        N("die Woche", "hafta", "c-week", ["haf", "ta"], None, "h deutlich hauchen"),
        N("der Monat", "ay", "1f5d3+1f319", ["ai"], None, "ay heißt auch: der Mond"),
@@ -194,9 +198,15 @@ WHEN = [("pazartesi", " günü", "am Montag", "c-w-1"),
         ("ocak", " ayında", "im Januar", "c-m-1"),
         ("ağustos", " ayında", "im August", "c-m-8")]
 DAILY = [("Bugün günlerden ne?", "Welcher Tag ist heute?", "1f4c6"),
-         ("Bugün çarşamba.", "Heute ist Mittwoch.", "c-w-3"),
-         ("Yarın perşembe.", "Morgen ist Donnerstag.", "c-w-4"),
+         ("Bugün salı.", "Heute ist Dienstag.", "c-w-2"),
+         ("Yarın çarşamba.", "Morgen ist Mittwoch.", "c-w-3"),
          ("Doğum günün ne zaman?", "Wann hast du Geburtstag?", "1f382")]
+def say_word(tr):
+    """Wie das Wort auf der Wortkarte gesprochen wird (mit korrigierter Lautschrift, falls vorhanden)."""
+    n = BY_TR[tr]
+    return n.tr_say[:-2] + ".]]" if n.tr_say.startswith("[[") else (n.tr_say or n.tr) + "."
+
+
 QUIZ = ["Pazartesi", "Cuma", "Pazar", "Çarşamba", "Ocak", "Mart", "Mayıs", "Ağustos", "Ekim", "Aralık", "hafta", "yıl"]
 FLOATERS = ["c-m-1", "c-w-1", "c-m-7", "c-w-6", "1f4c6", "1f319", "2600", "2744"]
 ICONS = ["1f4cc"]
@@ -213,7 +223,7 @@ def story_scene(ctx):
 
     rows = [dict(left=segs(a, b), icon=emo,
                  right=[(de, "Bold", 44, INK), (f"    {hint}", "SemiBold", 32, MUTED)],
-                 say=[("tr", a + b + "."), ("de", spoken)])
+                 say=[("tr", say_word(a + b), a + b + "."), ("de", spoken)])
             for a, b, emo, de, hint, spoken in STORY]
     return RowsScene(
         ctx, "Bonus 1: Merkhilfe Wochentage", "Merkhilfe Wochentage",

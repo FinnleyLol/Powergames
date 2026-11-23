@@ -16,7 +16,7 @@ Lernvideo (1080p, ca. 8 Minuten): die **12 Monate**, die **7 Wochentage** und **
 | Bonus 1 | **Merkhilfe Wochentage:** *Pazar* = Markt → *Pazartesi*, *Cuma* → *Cumartesi*, *Çarşamba*/*Perşembe* aus dem Persischen (4./5. Tag) |
 | Bonus 2 | **Monate nach Jahreszeiten:** *kış, ilkbahar, yaz, sonbahar* (Wiederholung aus dem Wetter-Video) |
 | Bonus 3 | **Wann?** *pazartesi günü* = am Montag · *hafta sonunda* = am Wochenende · *ocak ayında* = im Januar |
-| Bonus 4 | **Im Alltag:** *Bugün günlerden ne?* · *Bugün çarşamba.* · *Yarın perşembe.* · *Doğum günün ne zaman?* |
+| Bonus 4 | **Im Alltag:** *Bugün günlerden ne?* · *Bugün salı.* · *Yarın çarşamba.* · *Doğum günün ne zaman?* |
 | Quiz | 12 Wörter: Kalenderblatt + deutsches Wort, 3-2-1, dann die Lösung |
 | Übersicht | Alle 25 Wörter auf einer Seite (zum Anhalten und Abfotografieren) |
 
@@ -66,8 +66,18 @@ Die MP4-Datei hat Kapitelmarken, so kannst du in Playern wie VLC direkt zu einem
 Die betonte Silbe stammt aus der Lautschrift der Stimme. Die meisten Wörter werden hinten betont, einige aber
 vorne: **Ni**·san, **Tem**·muz, **E**·kim, **Ka**·sım, **A**·ra·lık, **Cu**·ma und **tak**·vim.
 
+**Zur Aussprache:** Alle türkischen Aufnahmen wurden mit einer Spracherkennung (Whisper) geprüft, pro Wort bis zu
+20 Aufnahmen, die verständlichste kommt ins Video.
+
+- ***Perşembe*** (Donnerstag) hat die Stimme zuerst wie „taşambe“ gesprochen. Jetzt spricht sie es aus
+  korrigierter Lautschrift mit deutlichem p, e und gerolltem r: **per**·schem·**be**. Im Alltag hört man das r
+  vor dem ş oft nur schwach („peşembe“).
+- Bei ***Ekim*** (Oktober) hält die Stimme das m am Ende etwas länger, sonst klang es wie „ekin“.
+- ***Mayıs*** (Mai) versteht die Spracherkennung einzeln oft als „maiz“, in der Reihe „Mart, Nisan, Mayıs“ aber
+  richtig. Sprich das y deutlich: ma·**jıs**.
+
 **Groß oder klein?** Auf Kalendern stehen Monate und Wochentage groß. Nach den Regeln des Türkischen werden sie
-im Satz klein geschrieben (*Bugün çarşamba.*) und nur groß, wenn ein genaues Datum folgt oder davorsteht
+im Satz klein geschrieben (*Bugün salı.*) und nur groß, wenn ein genaues Datum folgt oder davorsteht
 (*29 Ekim 1923 Pazartesi*).
 
 ## Bonus 1: Merkhilfe für die Wochentage
@@ -112,8 +122,8 @@ Kurz geht auch: *pazartesi* allein heißt oft schon „am Montag“, *ocakta* �
 | Türkisch | Deutsch |
 |---|---|
 | Bugün günlerden ne? | Welcher Tag ist heute? |
-| Bugün çarşamba. | Heute ist Mittwoch. |
-| Yarın perşembe. | Morgen ist Donnerstag. |
+| Bugün salı. | Heute ist Dienstag. |
+| Yarın çarşamba. | Morgen ist Mittwoch. |
 | Doğum günün ne zaman? | Wann hast du Geburtstag? |
 
 *bugün* = heute · *yarın* = morgen · *dün* = gestern · *doğum günü* = der Geburtstag (wörtlich: Geburts-Tag)
