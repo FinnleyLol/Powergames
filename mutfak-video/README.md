@@ -94,7 +94,7 @@ zusammengesetzten Wörtern wird das **erste** Wort betont (**kes**·me tah·ta·
 als die Stimme (zum Beispiel **ku**·pa).
 
 **Zur Aussprache:** Alle türkischen Aufnahmen wurden mit einer Spracherkennung (Whisper) geprüft, pro Wort bis
-zu 20 Aufnahmen, die verständlichste kommt ins Video.
+zu 20 Aufnahmen, die verständlichste kommt ins Video. 85 von 97 Aufnahmen wurden genau erkannt.
 
 - Für Backpapier sagt man auch ***yağlı kağıt*** (wörtlich: Fett-Papier). Bei diesem Wort hat die Stimme
   *kağıt* aber immer wie „köyt“ verschliffen. Darum steht im Video ***pişirme kağıdı***, das passt auch zu
