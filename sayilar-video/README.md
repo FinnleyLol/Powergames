@@ -72,6 +72,12 @@ Die betonte Silbe stammt aus der Lautschrift der Stimme. Fast alle Zahlen werden
 **se**·kiz (8), **do**·kuz (9), **o**·tuz (30), **sek**·sen (80) und **dok**·san (90) vorne. Bei 11–19 ist keine Silbe
 markiert: Jedes Wort behält seine eigene Betonung (on · i·**ki**).
 
+**Zur Aussprache:** Alle türkischen Aufnahmen wurden mit einer Spracherkennung (Whisper) geprüft, pro Wort bis zu
+20 Aufnahmen, die verständlichste kommt ins Video. 90 von 93 Aufnahmen wurden genau erkannt. Bei *on üç* (13) und
+*on yedi* (17) hat die Stimme das n von *on* fast verschluckt („o yedi“). Dort spricht sie jetzt ein deutlicheres
+**n**. *iki* versteht die Erkennung einzeln nicht immer („idi“), beim Zählen („Bir, iki, üç.“) aber sicher. Achte
+auf ein klares **k**: i·**ki**.
+
 **Merkhilfe:** 60–90 ähneln 6–9: *altı → altmış*, *yedi → yetmiş*, *sekiz → seksen*, *dokuz → doksan*.
 20–50 musst du lernen: *yirmi, otuz, kırk, elli*.
 
