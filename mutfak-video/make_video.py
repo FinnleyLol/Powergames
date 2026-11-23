@@ -54,8 +54,8 @@ CHAPTERS = [
         N("das Nudelholz", "oklava", "x-rollingpin", ["ok", "la", "wa"], None, "das türkische ist lang und dünn"),
         N("das Backblech", "fırın tepsisi", "x-bakingtray", ["fı", "rın", "_tep", "si", "si"], None,
           "fırın = Backofen  ·  tepsi = Tablett"),
-        N("das Backpapier", "yağlı kağıt", "x-bakingpaper", ["jaa", "lı", "_kaa", "ıt"], None,
-          "wörtlich: Fett-Papier  ·  ğ ist stumm"),
+        N("das Backpapier", "pişirme kağıdı", "x-bakingpaper", ["pi", "schir", "me", "_kaa", "ı", "dı"], None,
+          "pişirmek = backen  ·  kağıt = Papier  ·  ğ stumm"),
     ]),
     Chapter("Sofrada", "Am Tisch", "1f37d", [
         N("das Geschirr", "yemek takımı", "x-plate&1f963&2615", ["je", "mek", "_ta", "kı", "mı"], None,
@@ -85,7 +85,7 @@ CHAPTERS = [
         N("die Kaffeemaschine", "kahve makinesi", "x-coffeemachine", ["kah", "we", "_ma", "ki", "ne", "si"], None,
           "kahve = Kaffee  ·  h deutlich hauchen"),
         N("der Wasserkocher", "su ısıtıcısı", "x-kettle", ["su", "_ı", "sı", "tı", "dschı", "sı"], None,
-          "su = Wasser  ·  ısıtmak = erwärmen"),
+          "su = Wasser  ·  ısıtmak = erwärmen", tr_say="[[sˈuː ɯsɯtɯdʒɯsˈɯ]]"),
     ]),
     Chapter("Bulaşık", "Spülen", "1f9fd", [
         N("die Spüle", "evye", "x-sink", ["ew", "je"], -1, "lavabo = das Waschbecken"),
@@ -116,6 +116,15 @@ TABLE = [("Ellerine sağlık!", "Danke fürs Kochen!", "1f9d1-200d-1f373"),
          ("Tuzu uzatır mısın?", "Reichst du mir das Salz?", "1f9c2"),
          ("Bir kaşık alabilir miyim?", "Kann ich einen Löffel haben?", "1f944"),
          ("Bulaşıkları ben yıkarım.", "Ich spüle das Geschirr.", "1f9fd")]
+SAY = {"tuz": "[[tˈuːz.]]"}  # einzeln gesprochen klingt „tuz“ mit kurzem u wie „töz“
+
+
+def say_word(tr):
+    """Wie ein Nomen auf der Wortkarte gesprochen wird (mit korrigierter Lautschrift, falls vorhanden)."""
+    n = BY_TR[tr]
+    return n.tr_say[:-2] + ".]]" if n.tr_say.startswith("[[") else (n.tr_say or n.tr) + "."
+
+
 QUIZ = ["tencere", "tava", "kaşık", "çatal", "bıçak", "tabak", "bardak", "fincan", "süzgeç", "rende", "sünger", "musluk"]
 FLOATERS = ["x-pot", "1f373", "1f944", "x-fork", "2615", "x-caydanlik", "x-cezve", "1f9c2"]
 ICONS = ["1f4cc"]
@@ -138,8 +147,8 @@ class RowsScene(Scene):
         self.wait(0.4)
         for i, r in enumerate(rows):
             st = self.t
-            for k, (lang, text) in enumerate(r["say"]):
-                self.say(ctx.TR(text) if lang == "tr" else ctx.DE(text))
+            for k, (lang, text, *expect) in enumerate(r["say"]):  # („tr“, Text[, richtige Schreibweise])
+                self.say(ctx.TR(text, expect=expect[0] if expect else None) if lang == "tr" else ctx.DE(text))
                 self.wait(0.25 if k < len(r["say"]) - 1 else 0.55)
             self.marks[f"row{i}"] = (st, self.t)
         self.has_end = bool(end)
@@ -194,7 +203,8 @@ class RowsScene(Scene):
 def suffix_scene(ctx):
     rows = [dict(left=[(stem, "Bold", 62, INK), (suf, "ExtraBold", 62, RED)], icon=emo,
                  right=[(de_stem, "SemiBold", 44, MUTED), (f"  {ARROW}  ", "SemiBold", 44, MUTED), (de, "SemiBold", 48, INK)],
-                 say=[("tr", stem + "."), ("de", de_stem + "."), ("tr", stem + suf + "."), ("de", de + ".")])
+                 say=[("tr", SAY.get(stem, stem + "."), stem + "."), ("de", de_stem + "."), ("tr", stem + suf + "."),
+                      ("de", de + ".")])
             for stem, suf, de_stem, de, emo in SUFFIX]
     return RowsScene(
         ctx, "Bonus 1: Die Endung -lık", "-lık: Ding für …",
@@ -208,7 +218,7 @@ def suffix_scene(ctx):
 def verb_scene(ctx):
     rows = [dict(left=[(verb, "ExtraBold", 46, RED), (f"  = {de_verb}", "Medium", 30, MUTED)], icon=None,
                  right=[(noun, "Bold", 42, INK), (f"   {de}", "Medium", 27, MUTED)], right_icon=emo,
-                 say=[("tr", verb + "."), ("de", de_verb + "."), ("tr", noun + ".")])
+                 say=[("tr", verb + "."), ("de", de_verb + "."), ("tr", say_word(noun), noun + ".")])
             for verb, de_verb, noun, de, emo in VERBS]
     return RowsScene(
         ctx, "Bonus 2: Vom Verb zum Küchending", "Verb → Küchending",

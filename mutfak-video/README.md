@@ -42,7 +42,7 @@ Die MP4-Datei hat Kapitelmarken, so kannst du in Playern wie VLC direkt zu einem
 | die Reibe | **rende** | ren · **de** | rendelemek = reiben |
 | das Nudelholz | **oklava** | ok · la · **wa** | das türkische ist lang und dünn |
 | das Backblech | **fırın tepsisi** | fı · **rın**   tep · si · si | fırın = Backofen · tepsi = Tablett |
-| das Backpapier | **yağlı kağıt** | jaa · **lı**   kaa · ıt | wörtlich: Fett-Papier · ğ ist stumm |
+| das Backpapier | **pişirme kağıdı** | pi · **schir** · me   kaa · ı · dı | pişirmek = backen · kağıt = Papier · ğ stumm |
 
 ### 3. Sofrada – Am Tisch
 
@@ -92,6 +92,20 @@ Die betonte Silbe stammt aus der Lautschrift der Stimme, damit Hinweis und Ton z
 zusammengesetzten Wörtern wird das **erste** Wort betont (**kes**·me tah·ta·sı). Bei den Lehnwörtern *spatula*,
 *kupa*, *mikser*, *mikrodalga* und *evye* ist keine Silbe markiert, weil man sie im Alltag oft anders betont
 als die Stimme (zum Beispiel **ku**·pa).
+
+**Zur Aussprache:** Alle türkischen Aufnahmen wurden mit einer Spracherkennung (Whisper) geprüft, pro Wort bis
+zu 20 Aufnahmen, die verständlichste kommt ins Video.
+
+- Für Backpapier sagt man auch ***yağlı kağıt*** (wörtlich: Fett-Papier). Bei diesem Wort hat die Stimme
+  *kağıt* aber immer wie „köyt“ verschliffen. Darum steht im Video ***pişirme kağıdı***, das passt auch zu
+  *pişirmek* (Kapitel 1). Gesprochen wird *kağıt* „kaa-ıt“, das ğ ist stumm.
+- ***su ısıtıcısı*** und ***tuz*** spricht die Stimme mit etwas längerem u („suu“, „tuuz“). Mit kurzem u klang
+  es einzeln wie „sol“ bzw. „töz“.
+- Bei ***rende*** (Reibe) und ***evye*** (Spüle) ist die Aufnahme nicht ganz sauber: Das r am Anfang von *rende*
+  ist schwach, und *evye* klingt fast wie „evi“. Richtig ist **ren·de** mit kurz gerolltem r und **ev·je** mit
+  hörbarem v und j.
+- *kupa*, *biberlik* und *yemek takımı* versteht die Spracherkennung im Satz sicher („Kahve bir kupada.“,
+  „Biberlik nerede?“, „Yemek takımı çok güzel.“), nur einzeln nicht immer.
 
 ## Bonus 1: Die Endung -lık
 
