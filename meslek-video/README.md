@@ -99,7 +99,7 @@ Die MP4-Datei hat Kapitelmarken, so kannst du in Playern wie VLC direkt zu einem
 | der Künstler | **sanatçı** | sa · nat · **tschı** | sanat = Kunst |
 | der Schauspieler | **oyuncu** | o · jun · **dschu** | oyun = Spiel · auch: Spieler |
 | der Journalist | **gazeteci** | ga · se · te · **dschi** | gazete = Zeitung |
-Zu den 33 Berufen aus deiner Liste sind sieben dazugekommen: Krankenpfleger, Verkäufer, Architekt, Programmierer,
+Zu den 33 gewünschten Berufen sind sieben dazugekommen: Krankenpfleger, Verkäufer, Architekt, Programmierer,
 Schneider, Schauspieler und Journalist.
 
 Die betonte Silbe stammt aus der Lautschrift der Stimme, damit Hinweis und Ton zusammenpassen. Bei
