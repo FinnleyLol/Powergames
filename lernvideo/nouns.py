@@ -656,7 +656,8 @@ class OutroScene(Scene):
         self.wait(0.2)
         self.say(ctx.DE("Bis bald!"), "bye")
         self.finish(2.0)
-        big = g.fit("ExtraBold", big_tr, 180, 1300).size  # lange Ausrufe (z. B. „İyi yolculuklar!“) verkleinern
+        de_w = text_layer(g, [(f"  = {big_de}", "SemiBold", 56, MUTED)]).width
+        big = g.fit("ExtraBold", big_tr, 180, min(1300, 1560 - de_w)).size  # lange Ausrufe verkleinern, Zeile < 1560 px
         self.t1 = text_layer(g, [(big_tr, "ExtraBold", big, RED), (f"  = {big_de}", "SemiBold", 56, MUTED)])
         self.t2 = text_layer(g, [(sub, "SemiBold", g.fit("SemiBold", sub, 48, 1760).size, INK)])
         self.t3 = text_layer(g, [("Görüşürüz!", "Bold", 80, TEAL), ("  –  Bis bald!", "SemiBold", 64, MUTED)])

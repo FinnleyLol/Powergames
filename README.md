@@ -12,6 +12,7 @@ Lernvideos für Deutschsprachige, die Türkisch lernen, mit türkischer Aussprac
 | [Aile – Familie](aile-video/) | 20 Familien-Wörter, Mamas/Papas Seite, *annem* (meine Mutter), *Kaç kardeşin var?* | ca. 7 min |
 | [Doğa – Natur](doga-video/) | 40 Natur-Wörter (Land, Pflanzen, Gewässer, Himmel), Gegensätze, Sätze in der Natur | ca. 8 min |
 | [Ulaşım – Verkehrsmittel](ulasim-video/) | 25 Wörter für unterwegs, *otobüs durağı*, *otobüsle* (mit dem Bus), Sätze an der Haltestelle | ca. 7 min |
+| [Kıyafetler – Kleidung](kiyafet-video/) | 35 Wörter für Kleidung, Schuhe, Accessoires & Schmuck, Farben + Kleidung, *giymek/takmak*, Sätze im Geschäft | ca. 8 min |
 
 Die Videos liegen jeweils im Ordner `output/`. Die Wortlisten stehen in den READMEs der Ordner.
 
