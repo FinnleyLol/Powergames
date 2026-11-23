@@ -45,7 +45,7 @@ CHAPTERS = [
     Chapter("Sağlık ve yardım", "Gesundheit & Hilfe", "1f3e5", [
         N("der Arzt", "doktor", DOC + "+1fa7a", ["dok", "tor"], None, "auch: hekim"),
         N("der Zahnarzt", "diş hekimi", DOC + "+1f9b7", ["disch", "_he", "ki", "mi"], None,
-          "diş = Zahn  ·  umgangssprachlich: dişçi"),
+          "diş = Zahn  ·  umgangssprachlich: dişçi", tr_say="[[dˈɪʃ  hˈekimi]]"),
         N("der Krankenpfleger", "hemşire", DOC + "+1fa79", ["hem", "schi", "re"], None, "auch: die Krankenschwester"),
         N("der Apotheker", "eczacı", DOC + "+1f48a", ["edsch", "sa", "dschı"], None, "eczane = Apotheke  ·  c = „dsch“"),
         N("der Tierarzt", "veteriner", DOC + "+1f415", ["we", "te", "ri", "ner"], None, "auch: hayvan doktoru"),
@@ -86,8 +86,10 @@ CHAPTERS = [
         N("der Mechaniker", "tamirci", MECH, ["ta", "mir", "dschi"], None, "tamir = Reparatur"),
         N("der Bauarbeiter", "inşaat işçisi", "1f477", ["in", "scha", "at", "_isch", "tschi", "si"], None,
           "inşaat = Bau  ·  işçi = Arbeiter"),
-        N("der Schneider", "terzi", "x-worker-purple+1faa1", ["ter", "si"], None, "z = weiches s"),
-        N("der Friseur", "kuaför", "x-worker-black+2702", ["ku", "a", "för"], None, "für Herren auch: berber"),
+        N("der Schneider", "terzi", "x-worker-purple+1faa1", ["ter", "si"], None, "z = weiches s",
+          tr_say="[[teɾzˈi]]"),
+        N("der Friseur", "kuaför", "x-worker-black+2702", ["ku", "a", "för"], None, "für Herren auch: berber",
+          tr_say="[[kuwafˈœr]]"),
         N("der Gärtner", "bahçıvan", "x-worker-green+1f337", ["bah", "tschı", "wan"], None, "bahçe = Garten"),
         N("die Putzkraft", "temizlikçi", "x-worker-teal+1f9f9", ["te", "mis", "lik", "tschi"], None,
           "temizlik = Sauberkeit"),
@@ -98,7 +100,8 @@ CHAPTERS = [
         N("der Bäcker", "fırıncı", COOK + "+1f35e", ["fı", "rın", "dschı"], None, "fırın = Backofen"),
         N("der Fleischer", "kasap", "x-worker-white+1f969", ["ka", "sap"], None, "auch: der Metzger"),
         N("der Kellner", "garson", "1f935+1f37d", ["gar", "son"], None, "wie französisch „garçon“"),
-        N("der Bauer", "çiftçi", "1f9d1-200d-1f33e", ["tschift", "tschi"], None, "çiftlik = Bauernhof"),
+        N("der Bauer", "çiftçi", "1f9d1-200d-1f33e", ["tschift", "tschi"], None, "çiftlik = Bauernhof",
+          tr_say="[[tʃɪftʃˈi]]"),
     ]),
     Chapter("Sanat ve medya", "Kunst & Medien", "1f3ad", [
         N("der Sänger", "şarkıcı", "1f9d1-200d-1f3a4", ["schar", "kı", "dschı"], None, "şarkı = Lied"),
@@ -119,13 +122,13 @@ SUFFIX = [  # Wort + -cı = wer damit arbeitet
     ("çöp", "çü", "Müll", "der Müllmann", "x-worker-orange+1f5d1"),
     ("balık", "çı", "Fisch", "der Fischer", "x-worker-blue+1f41f"),
 ]
-IAM = [  # Beruf + „ich bin“
-    ("öğretmen", "im", "Ich bin Lehrer oder Lehrerin.", "ich bin Lehrer/in", TEACHER),
-    ("doktor", "um", "Ich bin Arzt.", "ich bin Arzt/Ärztin", DOC + "+1fa7a"),
-    ("polis", "im", "Ich bin Polizist.", "ich bin Polizist/in", "1f46e"),
-    ("mühendis", "im", "Ich bin Ingenieur.", "ich bin Ingenieur/in", OFFICE + "+2699"),
-    ("şoför", "üm", "Ich bin Fahrer.", "ich bin Fahrer/in", "x-worker-grey+1f68c"),
-    ("aşçı", "yım", "Ich bin Koch.", "ich bin Koch/Köchin", COOK),
+IAM = [  # Beruf + „ich bin“; gesprochen als ganzer Satz mit „Ben“ (das m am Ende klingt sonst wie n)
+    ("öğretmen", "im", "Ich bin Lehrer oder Lehrerin.", "ich bin Lehrer/in", TEACHER, "[[bˈæn œːɾɛtmˈenim.]]"),
+    ("doktor", "um", "Ich bin Arzt.", "ich bin Arzt/Ärztin", DOC + "+1fa7a", "Ben doktorum."),
+    ("polis", "im", "Ich bin Polizist.", "ich bin Polizist/in", "1f46e", "[[bˈæn polˈisim.]]"),
+    ("mühendis", "im", "Ich bin Ingenieur.", "ich bin Ingenieur/in", OFFICE + "+2699", "[[bˈæn myhændˈisim.]]"),
+    ("şoför", "üm", "Ich bin Fahrer.", "ich bin Fahrer/in", "x-worker-grey+1f68c", "Ben şoförüm."),
+    ("aşçı", "yım", "Ich bin Koch.", "ich bin Koch/Köchin", COOK, "Ben aşçıyım."),
 ]
 WORK = [("Ne iş yapıyorsun?", "Was machst du beruflich?", "1f4bc"),
         ("Ben hemşireyim.", "Ich bin Krankenpfleger(in).", DOC + "+1fa79"),
@@ -156,17 +159,18 @@ def suffix_scene(ctx):
 
 
 def iam_scene(ctx):
-    rows = [dict(left=[(job, "Bold", 54, INK), (suf, "ExtraBold", 54, RED)], icon=emo,
+    rows = [dict(left=[("ben ", "Medium", 44, MUTED), (job, "Bold", 54, INK), (suf, "ExtraBold", 54, RED)], icon=emo,
                  right=[(f"= {de_show}", "SemiBold", 42, INK)],
-                 say=[("tr", job + suf + "."), ("de", de_say)])
-            for job, suf, de_say, de_show, emo in IAM]
+                 say=[("tr", say, f"Ben {job}{suf}."), ("de", de_say)])
+            for job, suf, de_say, de_show, emo, say in IAM]
     return RowsScene(
         ctx, "Bonus 2: Ich bin …", "Ich bin …",
         "Bonus zwei: So sagst du deinen Beruf. Du hängst einfach eine Endung an, sie bedeutet: ich bin. "
         "Und übrigens: Auf Türkisch gibt es keinen Unterschied zwischen Lehrer und Lehrerin. Ein Wort für beide!",
         rows, end="Die Endung passt sich dem Vokal an. Endet der Beruf auf einen Vokal, kommt ein y dazwischen.",
-        note=[("-im / -ım / -um / -üm", "ExtraBold", 34, RED), ("   ·   nach Vokal mit y:  ", "Medium", 32, MUTED),
-              ("aşçı", "Bold", 34, INK), ("yım", "ExtraBold", 34, RED)],
+        note=[("-im / -ım / -um / -üm", "ExtraBold", 34, RED), ("  ·  nach Vokal mit y:  ", "Medium", 32, MUTED),
+              ("aşçı", "Bold", 34, INK), ("yım", "ExtraBold", 34, RED), ("  ·  ", "Medium", 32, MUTED),
+              ("ben", "Bold", 34, TEAL), (" = ich (kann wegfallen)", "Medium", 32, MUTED)],
         y0=245, dy=114, note_y=965)
 
 
@@ -220,7 +224,7 @@ def build_scenes(ctx: Ctx):
 
 def emoji_codes():
     return ({n.emoji for n in ALL} | {c.icon for c in CHAPTERS} | set(FLOATERS) | set(ICONS) | set(NOUN_ICONS)
-            | {e for *_, e in SUFFIX} | {e for *_, e in IAM} | {e for *_, e in WORK} | {"1f4bc"})
+            | {e for *_, e in SUFFIX} | {row[4] for row in IAM} | {e for *_, e in WORK} | {"1f4bc"})
 
 
 if __name__ == "__main__":

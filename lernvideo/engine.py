@@ -172,7 +172,8 @@ def tr_words(text: str) -> list:
     text = re.sub(r"\d+(?:[.,]\d{3})+|\d+", lambda m: tr_number(int(re.sub(r"[.,]", "", m.group()))), text)
     text = text.replace("'", "").replace("’", "")
     text = text.replace("İ", "i").replace("I", "ı").lower().replace("i̇", "i")
-    return re.findall(r"[a-zçğıöşüâîû]+", text)
+    text = text.replace("â", "a").replace("î", "i").replace("û", "u")  # hâkim = hakim
+    return re.findall(r"[a-zçğıöşü]+", text)
 
 
 class Verifier:
