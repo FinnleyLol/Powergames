@@ -15,6 +15,7 @@ Lernvideos für Deutschsprachige, die Türkisch lernen, mit türkischer Aussprac
 | [Kıyafetler – Kleidung](kiyafet-video/) | 35 Wörter für Kleidung, Schuhe, Accessoires & Schmuck, Farben + Kleidung, *giymek/takmak*, Sätze im Geschäft | ca. 8 min |
 | [Mutfak – Küchensachen](mutfak-video/) | 35 Küchenwörter (Kochen, Backen, Tisch, Tee & Kaffee, Geräte, Spülen), Endung *-lık*, Verb → Küchending, Sätze am Esstisch | ca. 9 min |
 | [Sayılar – Zahlen](sayilar-video/) | 30 Zahlwörter (0–20, Zehner, hundert, tausend), Regeln für große Zahlen (*yirmi beş*, *iki bin yirmi altı*), Alter & Preise | ca. 8 min |
+| [Meslekler – Berufe](meslek-video/) | 40 Berufe, Endung *-cı* (*postacı*), „ich bin …“ (*öğretmenim*), Sätze über die Arbeit | ca. 10 min |
 
 Die Videos liegen jeweils im Ordner `output/`. Die Wortlisten stehen in den READMEs der Ordner.
 
