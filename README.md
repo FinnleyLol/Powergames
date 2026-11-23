@@ -13,6 +13,7 @@ Lernvideos für Deutschsprachige, die Türkisch lernen, mit türkischer Aussprac
 | [Doğa – Natur](doga-video/) | 40 Natur-Wörter (Land, Pflanzen, Gewässer, Himmel), Gegensätze, Sätze in der Natur | ca. 8 min |
 | [Ulaşım – Verkehrsmittel](ulasim-video/) | 25 Wörter für unterwegs, *otobüs durağı*, *otobüsle* (mit dem Bus), Sätze an der Haltestelle | ca. 7 min |
 | [Kıyafetler – Kleidung](kiyafet-video/) | 35 Wörter für Kleidung, Schuhe, Accessoires & Schmuck, Farben + Kleidung, *giymek/takmak*, Sätze im Geschäft | ca. 8 min |
+| [Mutfak – Küchensachen](mutfak-video/) | 35 Küchenwörter (Kochen, Backen, Tisch, Tee & Kaffee, Geräte, Spülen), Endung *-lık*, Verb → Küchending, Sätze am Esstisch | ca. 9 min |
 
 Die Videos liegen jeweils im Ordner `output/`. Die Wortlisten stehen in den READMEs der Ordner.
 
