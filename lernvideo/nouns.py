@@ -501,6 +501,77 @@ class PhraseGridScene(Scene):
 
 
 # ---------------------------- Quiz ----------------------------------------------------
+class RowsScene(Scene):
+    """Bonus-Tafel: Zeilen aus linker Box (alle gleich breit) und rechtem Teil, Zeile für Zeile gesprochen.
+    rows: dict(left=segs, icon=emoji, right=segs, right_icon=emoji|None,
+               say=[("tr"|"tr_slow"|"de", text[, richtige Schreibweise]), …])"""
+
+    def __init__(self, ctx, heading, chapter, intro, rows, note=None, end=None,
+                 y0=260, dy=130, note_y=None, arrow=False, gap=40, h=100):
+        super().__init__(ctx)
+        g = self.g
+        self.heading_text, self.chapter = heading, chapter
+        self.wait(0.3)
+        self.say(ctx.DE(intro), "intro")
+        self.wait(0.4)
+        for i, r in enumerate(rows):
+            st = self.t
+            for k, (lang, text, *expect) in enumerate(r["say"]):
+                if lang == "de":
+                    self.say(ctx.DE(text))
+                else:
+                    self.say(ctx.TR(text, slow=lang == "tr_slow", expect=expect[0] if expect else None))
+                self.wait(0.25 if k < len(r["say"]) - 1 else 0.55)
+            self.marks[f"row{i}"] = (st, self.t)
+        self.has_end = bool(end)
+        if end:
+            self.say(ctx.DE(end), "end")
+        self.finish(1.2)
+        self.pill = ctx.pill
+        bw = max(pill(g, r["left"], h=h, icon=r["icon"]).width - 2 * pill(g, r["left"], h=h, icon=r["icon"]).pad
+                 for r in rows)
+        self.lefts = [pill(g, r["left"], h=h, icon=r["icon"], minw=bw) for r in rows]
+        self.rights = []
+        for r in rows:
+            if r.get("right_icon"):
+                im = pill(g, r["right"], h=92, icon=r["right_icon"])
+                self.rights.append((im, im.width - 2 * im.pad, im.pad))
+            else:
+                im = text_layer(g, r["right"])
+                self.rights.append((im, im.width - 24, 12))
+        rw = max(w for _, w, _ in self.rights)
+        self.gap = gap
+        self.x0 = (W - (bw + gap + rw)) / 2
+        self.bw = bw
+        self.arrow = text_layer(g, [(ARROW, "Bold", 48, MUTED)]) if arrow else None
+        self.y0, self.dy = y0, dy
+        self.note = pill(g, note, h=78, fill=NOTE_BG, icon="1f4cc") if note else None
+        self.note_y = note_y or (y0 + len(rows) * dy + 20)
+
+    def render(self, t):
+        f = self.g.bg.copy()
+        self.heading(f, self.heading_text, y=105, size=58)
+        for i, im in enumerate(self.lefts):
+            st = self.m(f"row{i}")[0]
+            if t < st:
+                continue
+            op, dy = appear(t, st)
+            y = self.y0 + i * self.dy + dy
+            put_center(f, im, self.x0 + self.bw / 2, y, opacity=op, scale=1.03 if self.active(t, f"row{i}") else 1.0)
+            if self.arrow is not None:
+                put_center(f, self.arrow, self.x0 + self.bw + self.gap / 2, y, opacity=op)
+            rim, rw, pad = self.rights[i]
+            put_center(f, rim, self.x0 + self.bw + self.gap + rw / 2, y, opacity=op)
+        if self.note is not None:
+            st = self.m("end")[0] if self.has_end else self.m("row0")[0]
+            if t >= st:
+                put_center(f, self.note, W / 2, self.note_y, opacity=clamp((t - st) / 0.3))
+        for k in ("intro", "end"):
+            if k in self.marks and self.active(t, k):
+                self.pill.draw(f, "de", self.since(t, k), t, None, cy=1010)
+        return f
+
+
 class QuizIntroScene(Scene):
     chapter = "Quiz"
 

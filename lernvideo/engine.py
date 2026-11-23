@@ -92,13 +92,16 @@ def icon_path(cache: str, code: str) -> str:
     return os.path.join(cache, "emoji", code + ".svg")
 
 
+ICON_RENDERERS: dict = {}  # Präfix → fn(gfx, code, size): Bilder, die im Code gezeichnet werden (z. B. Ziffern)
+
+
 def ensure_assets(cache: str, emoji_codes) -> None:
     for name in ["Poppins-ExtraBold", "Poppins-Bold", "Poppins-SemiBold", "Poppins-Medium", "Poppins-Regular"]:
         download(FONT_URL.format(name), os.path.join(cache, "fonts", name + ".ttf"))
     parts = {p for code in set(emoji_codes) | set(BASE_ICONS)  # „a+b“ / „a&b&c“ = zusammengesetzt
              for p in code.replace("&", "+").split("+")}
     for code in sorted(parts):
-        if not code.startswith("x-"):  # „x-…“ = eigene Zeichnung aus EXTRA_ICON_DIRS
+        if not code.startswith(("x-",) + tuple(ICON_RENDERERS)):  # „x-…“ = eigene Zeichnung aus EXTRA_ICON_DIRS
             download(TWEMOJI_URL.format(code), os.path.join(cache, "emoji", code + ".svg"))
     for voice in (VOICE_TR, VOICE_DE):
         vdir = os.path.join(cache, "voices")
@@ -357,6 +360,9 @@ class Gfx:
                 ring.alpha_composite(b, ((bs - b.width) // 2, (bs - b.height) // 2))
                 im.alpha_composite(ring, (size - bs, 0))
                 self._emoji[key] = im
+            elif code.startswith(tuple(ICON_RENDERERS)):
+                fn = next(f for pre, f in ICON_RENDERERS.items() if code.startswith(pre))
+                self._emoji[key] = fn(self, code, size)
             else:
                 import cairosvg
 
