@@ -86,6 +86,12 @@ zusammengesetzten Wörtern wird das **erste** Wort betont (**spor** a·jak·ka·
 *mayo* und *kolye* ist keine Silbe markiert: Hier hört man im Alltag oft eine frühere Betonung (**ma**·yo,
 **kol**·ye) als bei der Stimme.
 
+**Zur Aussprache:** Alle Wörter wurden mit einer Spracherkennung (Whisper) geprüft; 91 von 99 türkischen
+Aufnahmen wurden genau erkannt. Bei ***küpe*** (Ohrring) und beim Kapitelnamen ***Üst giyim*** klappt das nur im
+Satz („Bu küpe çok güzel.“, „Bu üst giyim çok güzel.“), einzeln hört die Erkennung „küle“ bzw. „Büst giyim“.
+Richtig ist: **kü·pe** mit klarem p, und *üst* beginnt direkt mit dem ü, ohne Konsonant davor. Bei ***tişört***
+schreibt die Erkennung oft einfach „T-Shirt“. Sprich das ş deutlich als „sch“ und das t am Ende hörbar: **ti·schört**.
+
 ## Bonus 1: Farben + Kleidung
 
 | Türkisch | Deutsch |
