@@ -107,7 +107,9 @@ TEENS_DE = ["elf", "zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "s
 CH1 = [N("null", "sıfır", n(0), ["sı", "fır"], None, "ı = dumpfes i")]
 CH1 += [N(de, tr, n(i), syl, None, note) for i, (de, tr, syl, note) in enumerate(ONES, 1)]
 CH1 += [N("zehn", "on", n(10), ["on"], None, "kurz und klar: on")]
-CH2 = [N(de, "on " + tr, n(10 + i), ["on"] + ["_" + syl[0]] + syl[1:], -1, f"10 + {i}: on + {tr}")
+TEEN_SAY = {3: "[[ˈɔnn ˈøtʃ]]", 7: "[[ˈɔnn jedˈɪ]]"}  # sonst verschluckt die Stimme das n von „on“
+CH2 = [N(de, "on " + tr, n(10 + i), ["on"] + ["_" + syl[0]] + syl[1:], -1, f"10 + {i}: on + {tr}",
+         tr_say=TEEN_SAY.get(i, ""))
        for i, (de, (_, tr, syl, _)) in enumerate(zip(TEENS_DE, ONES), 1)]
 CH2 += [N("zwanzig", "yirmi", n(20), ["jir", "mi"], None, "y = „j“")]
 CH3 = [N("dreißig", "otuz", n(30), ["o", "tus"], None, "Betonung vorne: O-tuz"),

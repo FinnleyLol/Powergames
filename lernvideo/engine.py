@@ -145,7 +145,32 @@ def read_wav(path: str) -> np.ndarray:
         return np.frombuffer(r.readframes(r.getnframes()), dtype=np.int16).astype(np.float32) / 32768.0
 
 
+TR_ONES = ["", "bir", "iki", "üç", "dört", "beş", "altı", "yedi", "sekiz", "dokuz"]
+TR_TENS = ["", "on", "yirmi", "otuz", "kırk", "elli", "altmış", "yetmiş", "seksen", "doksan"]
+
+
+def tr_number(n: int) -> str:
+    """Zahl → türkische Zahlwörter (1453 → „bin dört yüz elli üç“)."""
+    if n == 0:
+        return "sıfır"
+    parts = []
+    for value, name in ((10 ** 9, "milyar"), (10 ** 6, "milyon"), (1000, "bin")):
+        q, n = divmod(n, value)
+        if q:
+            parts.append(name if (q == 1 and name == "bin") else f"{tr_number(q)} {name}")
+    h, n = divmod(n, 100)
+    if h:
+        parts.append("yüz" if h == 1 else f"{TR_ONES[h]} yüz")
+    t, o = divmod(n, 10)
+    parts += [w for w in (TR_TENS[t], TR_ONES[o]) if w]
+    return " ".join(parts)
+
+
 def tr_words(text: str) -> list:
+    """Wörter zum Vergleichen: klein, ohne Satzzeichen; Ziffern werden zu Zahlwörtern („15“ → on beş),
+    Apostroph-Endungen hängen am Wort („20'ye“ → yirmiye)."""
+    text = re.sub(r"\d+(?:[.,]\d{3})+|\d+", lambda m: tr_number(int(re.sub(r"[.,]", "", m.group()))), text)
+    text = text.replace("'", "").replace("’", "")
     text = text.replace("İ", "i").replace("I", "ı").lower().replace("i̇", "i")
     return re.findall(r"[a-zçğıöşüâîû]+", text)
 
