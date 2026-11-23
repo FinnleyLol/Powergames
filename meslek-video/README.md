@@ -106,6 +106,16 @@ Die betonte Silbe stammt aus der Lautschrift der Stimme, damit Hinweis und Ton z
 zusammengesetzten Wörtern wird das **erste** Wort betont (o·to·**büs** scho·fö·rü). Bei *bilim insanı* ist keine
 Silbe markiert, weil die Stimme *bilim* vorne betont, im Alltag hört man meist bi·**lim**.
 
+**Zur Aussprache:** Alle türkischen Aufnahmen wurden mit einer Spracherkennung (Whisper) geprüft, pro Wort bis zu
+20 Aufnahmen, die verständlichste kommt ins Video. 103 von 109 Aufnahmen wurden genau erkannt.
+
+- Die Stimme spricht ein **m am Wortende** schwach, *öğretmenim* klang einzeln fast wie *öğretmenin*
+  („deines Lehrers“). Darum sagt sie in Bonus 2 ganze Sätze (*Ben öğretmenim.*) mit deutlicherem *-im*.
+- *kuaför* klang wie „koför“: Jetzt spricht die Stimme es mit leichtem Übergang **ku-(w)a-för**, so wie viele
+  Türkinnen und Türken auch. *terzi*, *çiftçi* und *diş hekimi* spricht sie aus korrigierter Lautschrift.
+- Bei ***hemşire*** klingt das m fast wie n („henşire“). Richtig ist **hem**·schi·re mit geschlossenen Lippen.
+  Bei *anaokulu* (Kindergarten) hörst du alle Vokale einzeln: a·na·o·ku·lu.
+
 ## Bonus 1: Die Endung -cı
 
 | Wort | + Endung | Beruf |

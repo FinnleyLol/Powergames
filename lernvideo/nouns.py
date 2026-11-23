@@ -547,6 +547,8 @@ class RowsScene(Scene):
         self.y0, self.dy = y0, dy
         self.note = pill(g, note, h=78, fill=NOTE_BG, icon="1f4cc") if note else None
         self.note_y = note_y or (y0 + len(rows) * dy + 20)
+        if end:  # während des Schluss-Satzes steht unten die „Hör zu“-Anzeige (cy=1010): Hinweis darüber
+            self.note_y = min(self.note_y, 915)
 
     def render(self, t):
         f = self.g.bg.copy()
