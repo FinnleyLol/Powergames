@@ -67,10 +67,11 @@ Die betonte Silbe stammt aus der Lautschrift der Stimme. Die meisten Wörter wer
 vorne: **Ni**·san, **Tem**·muz, **E**·kim, **Ka**·sım, **A**·ra·lık, **Cu**·ma und **tak**·vim.
 
 **Zur Aussprache:** Alle türkischen Aufnahmen wurden mit einer Spracherkennung (Whisper) geprüft, pro Wort bis zu
-20 Aufnahmen, die verständlichste kommt ins Video.
+20 Aufnahmen, die verständlichste kommt ins Video. 65 von 75 Aufnahmen wurden genau erkannt.
 
 - ***Perşembe*** (Donnerstag) hat die Stimme zuerst wie „taşambe“ gesprochen. Jetzt spricht sie es aus
-  korrigierter Lautschrift mit deutlichem p, e und gerolltem r: **per**·schem·**be**. Im Alltag hört man das r
+  korrigierter Lautschrift mit deutlichem p, e und gerolltem r: per·schem·**be**. In der langsamen Fassung
+  klingt nach dem gerollten r ein kleiner Vokal mit („peri-şembe“), den gibt es im Wort nicht. Im Alltag hört man das r
   vor dem ş oft nur schwach („peşembe“).
 - Bei ***Ekim*** (Oktober) hält die Stimme das m am Ende etwas länger, sonst klang es wie „ekin“.
 - ***Mayıs*** (Mai) versteht die Spracherkennung einzeln oft als „maiz“, in der Reihe „Mart, Nisan, Mayıs“ aber
