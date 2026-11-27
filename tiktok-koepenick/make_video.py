@@ -48,12 +48,15 @@ PAUSE_LINE = 0.26
 PAUSE_AFTER = {}
 PHRASE_PAUSE = {}
 DURATION = 30.0
-TARGET_LUFS = -9  # owner: voice louder again -> -9 LUFS (was -11, before that -14)
-# loudnorm alone cannot reach -9 LUFS with TP -1.5 (too much peak-to-loudness), so the mix is boosted and
-# limited first (oversampled limiter, catches inter-sample peaks). Tested: -9.0 LUFS, true peak about -1.7 dB.
-PRE_GAIN_DB = 6
-PRE_LIMIT = 0.5
+TARGET_LUFS = -6.5  # owner asked three times for louder. Measured result about -7.4 to -7.8 LUFS (was -9, -11, -14);
+# the safety limiter caps it there, more would need audible distortion.
+# loudnorm alone cannot reach these levels with TP -1.5 (too much peak-to-loudness), so the mix is boosted and
+# limited first (oversampled limiter, catches inter-sample peaks), and an oversampled safety limiter follows
+# loudnorm. Tested on tiktok-venus / tiktok-mikrowelle: -7.4 / -7.8 LUFS, true peak -1.3 / -1.6 dB, speech still clear.
+PRE_GAIN_DB = 9
+PRE_LIMIT = 0.45
 TRUE_PEAK = -1.5
+POST_LIMIT = 0.78
 FPS = 30
 SR = 48000
 
@@ -301,7 +304,8 @@ def step_mux() -> None:
     mix = os.path.join(BUILD, "mix_limited.wav")
     pre_limit(os.path.join(BUILD, "mix.wav"), mix)
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", os.path.join(BUILD, "video.mp4"), "-i", mix,
-                    "-af", loudnorm_args(mix) + f",aresample={SR}", "-map", "0:v", "-map", "1:a",
+                    "-af", loudnorm_args(mix) + f",aresample=192000,alimiter=limit={POST_LIMIT}:attack=1:release=50:level=false,"
+                    f"aresample={SR}", "-map", "0:v", "-map", "1:a",
                     "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-t", str(DURATION),
                     "-movflags", "+faststart", OUT_FILE], check=True)
     print("done:", OUT_FILE)
