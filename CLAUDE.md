@@ -14,4 +14,4 @@ This repo has two kinds of videos: the German→Turkish learning videos (see REA
 
 ## How to make one
 
-Copy `tiktok-oymyakon/` to a new folder and change `SCRIPT`, `make_cues`, `VOICE = 15` (am_liam) and the scene functions in `scene.js`. Leave out the `music(...)` stem in `audio.py`, and move `drawCaptions` to the middle of the screen. Run `python make_video.py`, and check previews with `node render.mjs --stills …`.
+Copy `tiktok-trees/`, which already follows all of these rules (Liam voice, no music, centred subtitles, dry ending), to a new folder. Then change `SCRIPT`, `make_cues`, the sound-effect cues in `audio.py` and the scene functions in `scene.js`. Run `python make_video.py`, and check previews with `node render.mjs --stills …`. Check the voice with Whisper as well: short phrases can come out unclear ("The catch?" was heard as "Leakage").
