@@ -30,3 +30,11 @@ Die Videos liegen jeweils im Ordner `output/`. Die Wortlisten stehen in den READ
 pip install -r requirements.txt
 cd fiiller-video && python make_video.py
 ```
+
+## TikTok shorts (English, 9:16)
+
+| Video | Topic | Length |
+|---|---|---|
+| [Oymyakon](tiktok-oymyakon/) | The coldest inhabited place on Earth (−67.7 °C, colder than Mars, school until −52 °C, cars that never stop) | 25 s |
+
+The host of the shorts is the green character in [`character/`](character/) (poses: `serious`, `thinking`, `thumbsup`, with transparent backgrounds).
