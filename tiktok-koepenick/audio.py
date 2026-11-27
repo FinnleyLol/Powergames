@@ -549,7 +549,7 @@ def reverb(x: np.ndarray, sr: int, decay=0.5, wet=0.25) -> np.ndarray:
     return x + wet * w
 
 
-SFX_GAIN = 0.5
+SFX_GAIN = 0.35  # owner: voice louder -> effects about 3 dB lower than before
 
 
 # host walking in the first shot: must match WALK0 in scene.js

@@ -48,6 +48,7 @@ PAUSE_LINE = 0.26
 PAUSE_AFTER = {}
 PHRASE_PAUSE = {}
 DURATION = 30.0
+TARGET_LUFS = -11  # owner: voice louder -> master at -11 LUFS instead of -14
 FPS = 30
 SR = 48000
 
@@ -203,7 +204,7 @@ def step_voice() -> None:
     # resample to 48 kHz and give the voice a little presence + compression
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", os.path.join(BUILD, "voice24.wav"),
                     "-af", "highpass=f=75,equalizer=f=180:t=q:w=1:g=2,equalizer=f=3500:t=q:w=1.2:g=3,"
-                           "acompressor=threshold=-22dB:ratio=3:attack=4:release=90:makeup=2",
+                           "acompressor=threshold=-26dB:ratio=4:attack=3:release=70:makeup=4,alimiter=limit=0.95",
                     "-ar", str(SR), os.path.join(BUILD, "voice.wav")], check=True)
 
     cues = make_cues(lines_out)
@@ -277,10 +278,10 @@ def step_render(workers: int) -> None:
 
 def loudnorm_args(path: str) -> str:
     r = subprocess.run(["ffmpeg", "-hide_banner", "-i", path, "-af",
-                        "loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json", "-f", "null", "-"],
+                        f"loudnorm=I={TARGET_LUFS}:TP=-1.0:LRA=9:print_format=json", "-f", "null", "-"],
                        capture_output=True, text=True, check=True)
     js = json.loads(r.stderr[r.stderr.rindex("{"):r.stderr.rindex("}") + 1])
-    return (f"loudnorm=I=-14:TP=-1.5:LRA=11:measured_I={js['input_i']}:measured_TP={js['input_tp']}:"
+    return (f"loudnorm=I={TARGET_LUFS}:TP=-1.0:LRA=9:measured_I={js['input_i']}:measured_TP={js['input_tp']}:"
             f"measured_LRA={js['input_lra']}:measured_thresh={js['input_thresh']}:offset={js['target_offset']}:linear=true")
 
 
