@@ -28,9 +28,9 @@ This repo has two kinds of videos: the German→Turkish learning videos (see REA
 
 ## How to make one
 
-Copy `tiktok-penicillin/` to a new folder. It already has one-word subtitles (`drawCaptions`), the host on and off screen (`on: false` keys in `CHAR_KEYS`), no music, no outro, and a real photo with a credit in its README. Then:
+Copy `tiktok-eiffel/` to a new folder. It already has one-word subtitles, illustrated sceneries per scene, the rigged host (`RIG`/`prepRig`/`drawHost`: head moves, walking with footstep sounds, jumps, turns, shadow, emotes, props), no music and no outro. `tiktok-penicillin/` shows how to use a real photo with a credit. Then:
 - Change `SCRIPT`, `make_cues` and the sound-effect cues in `audio.py` for the new topic.
 - Replace the scene functions in `scene.js`. Give each scene its own illustrated scenery (see the rules above) instead of `drawBackground`'s plain gradient.
-- Upgrade the host: split head and body for head moves, add walking, jumping, turning, shadows and emotes, and place him inside the sceneries.
+- Choreograph the host per scene: where he stands or walks, poses, head moves, emotes and props. Keep the walk times in `audio.py` (`walk_steps`) in sync with the walks in `scene.js`.
 
 Run `python make_video.py`, and check previews with `node render.mjs --stills …` (look at a contact sheet of many frames). Check the voice with Whisper as well: short phrases can come out unclear ("The catch?" was heard as "Leakage").
