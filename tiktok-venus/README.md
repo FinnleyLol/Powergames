@@ -7,8 +7,8 @@
 | 0–3,1 s | Auf der Venus ist ein Tag länger als ein Jahr. | Abendhimmel in Lila/Rosa/Orange, Venus als heller Abendstern, Hügel mit Teleskop, Dorflichter, Glühwürmchen; VENUS, 1 TAG > 1 JAHR | läuft rein, schaut hoch, springt mit „!“ |
 | 3,1–6 s | Einmal um sich selbst: 243 Tage. | Weltraum, riesige Venus dreht sich ganz langsam (Fähnchen auf der Oberfläche), Zähler 0 → 243 TAGE; SOOO LANGSAM | – |
 | 6–9,2 s | Einmal um die Sonne: nur 225. | Sonne mit Umlaufbahn, die Venus kreist einmal herum, Zähler 0 → 225, Balken TAG 243 vs. JAHR 225 | – |
-| 9,2–10,9 s | Und sie dreht sich rückwärts: | Split-Screen Erde (dreht nach rechts) / Venus (dreht nach links); RÜCKWÄRTS! | – |
-| 10,9–12,3 s | Die Sonne geht im Westen auf. | Venus-Oberfläche in Orange, Vulkane, Felsen, W und O am Boden, die Sonne geht links auf; WESTEN! | im Raumhelm, „?“, dreht sich um, „!“ |
+| 9,2–10,6 s | Und sie dreht sich rückwärts: | Split-Screen Erde (dreht nach rechts) / Venus (dreht nach links); RÜCKWÄRTS! | – |
+| 10,6–12,3 s | Die Sonne geht im Westen auf. | Venus-Oberfläche in Orange, Vulkane, Felsen, W und O am Boden, die Sonne geht links auf; WESTEN! | im Raumhelm, „?“, dreht sich um, „!“ |
 | 12,3–16,4 s | Am Boden hat es 465 Grad. Da schmilzt sogar Blei. | Rote Hitze mit Flimmern und glühendem Vulkan, Thermometer steigt bis 465 °C (Marke „250° Pizzaofen“), ein Bleiblock (Pb) zerfließt; HEISS!, BLEI | schwitzt im Helm, Dampf über der Mütze |
 | 16,4–19,7 s | Die Luft drückt so stark wie 900 Meter tief im Meer. | Tiefsee mit Lichtstrahlen, Fischen, Anglerfisch, Tiefenmesser 0 → 900 M; DRUCK | sinkt ab und wird zusammengedrückt, rote Pfeile |
 | 19,7–21,8 s | Und die Wolken bestehen aus Säure. | Gelbgrüne Wolkenschichten, Säuretropfen fressen Löcher in einen Regenschirm, Warnschild; DIE WOLKEN, SÄURE! | – |
