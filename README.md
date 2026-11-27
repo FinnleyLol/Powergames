@@ -45,5 +45,6 @@ cd fiiller-video && python make_video.py
 | [Der Rattenfänger von Hameln](tiktok-hameln/) | Deutsch, Geschichte/Mystery: 130 Kinder 1284, die Ratten kamen später | 30 s |
 | [Du hast dein Gesicht noch nie gesehen](tiktok-spiegel/) | Deutsch, Fun Fact/Psychologie: Spiegelbild vs. Foto, Studie von 1977 | 30 s |
 | [Die Mikrowelle](tiktok-mikrowelle/) | Deutsch, Story/Erfindung: geschmolzener Schokoriegel 1945, Popcorn, explodierendes Ei, 2 Dollar Prämie | 30 s |
+| [Venus: ein Tag länger als ein Jahr](tiktok-venus/) | Deutsch, Fun Fact/Weltraum: 243 vs. 225 Tage, Sonne im Westen, 465 °C, Sonde 1982 | 30 s |
 
 The host of the shorts is the green character in [`character/`](character/) (poses: `serious`, `thinking`, `thumbsup`, with transparent backgrounds).
