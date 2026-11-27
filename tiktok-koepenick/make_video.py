@@ -221,7 +221,7 @@ def step_voice() -> None:
 def find_word(lines, li, text):
     for ph in lines[li]["phrases"]:
         for w in ph["words"]:
-            if w["text"].lower().strip(".,?!") == text.lower().strip(".,?!"):
+            if w["text"].lower().strip(".,?!:") == text.lower().strip(".,?!:"):
                 return w
     raise KeyError(text)
 
