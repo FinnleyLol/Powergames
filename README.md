@@ -42,5 +42,6 @@ cd fiiller-video && python make_video.py
 | [The ghost ship Mary Celeste](tiktok-mary-celeste/) | Mystery/history in second person (1872), flat illustration style with fast cuts, labels and callouts | 25 s |
 | [Der Hauptmann von Köpenick](tiktok-koepenick/) | **Deutsch**: Wilhelm Voigt 1906, flacher Stil mit animierten Menschen und Tieren | 30 s |
 | [Flamingos sind nicht rosa](tiktok-flamingos/) | Deutsch, Fun Fact: die Farbe kommt aus dem Futter | 30 s |
+| [Der Rattenfänger von Hameln](tiktok-hameln/) | Deutsch, Geschichte/Mystery: 130 Kinder 1284, die Ratten kamen später | 30 s |
 
 The host of the shorts is the green character in [`character/`](character/) (poses: `serious`, `thinking`, `thumbsup`, with transparent backgrounds).
