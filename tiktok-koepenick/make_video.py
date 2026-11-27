@@ -48,7 +48,12 @@ PAUSE_LINE = 0.26
 PAUSE_AFTER = {}
 PHRASE_PAUSE = {}
 DURATION = 30.0
-TARGET_LUFS = -11  # owner: voice louder -> master at -11 LUFS instead of -14
+TARGET_LUFS = -9  # owner: voice louder again -> -9 LUFS (was -11, before that -14)
+# loudnorm alone cannot reach -9 LUFS with TP -1.5 (too much peak-to-loudness), so the mix is boosted and
+# limited first (oversampled limiter, catches inter-sample peaks). Tested: -9.0 LUFS, true peak about -1.7 dB.
+PRE_GAIN_DB = 6
+PRE_LIMIT = 0.5
+TRUE_PEAK = -1.5
 FPS = 30
 SR = 48000
 
@@ -276,18 +281,25 @@ def step_render(workers: int) -> None:
     subprocess.run(["node", os.path.join(HERE, "render.mjs"), "--workers", str(workers)], check=True, cwd=HERE)
 
 
+def pre_limit(src: str, dst: str) -> None:
+    lim = f"alimiter=limit={PRE_LIMIT}:attack=1:release=50:level=false"
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", src, "-af",
+                    f"volume={PRE_GAIN_DB}dB,{lim},aresample=192000,{lim},aresample={SR}", dst], check=True)
+
+
 def loudnorm_args(path: str) -> str:
     r = subprocess.run(["ffmpeg", "-hide_banner", "-i", path, "-af",
-                        f"loudnorm=I={TARGET_LUFS}:TP=-1.0:LRA=9:print_format=json", "-f", "null", "-"],
+                        f"loudnorm=I={TARGET_LUFS}:TP={TRUE_PEAK}:LRA=11:print_format=json", "-f", "null", "-"],
                        capture_output=True, text=True, check=True)
     js = json.loads(r.stderr[r.stderr.rindex("{"):r.stderr.rindex("}") + 1])
-    return (f"loudnorm=I={TARGET_LUFS}:TP=-1.0:LRA=9:measured_I={js['input_i']}:measured_TP={js['input_tp']}:"
+    return (f"loudnorm=I={TARGET_LUFS}:TP={TRUE_PEAK}:LRA=11:measured_I={js['input_i']}:measured_TP={js['input_tp']}:"
             f"measured_LRA={js['input_lra']}:measured_thresh={js['input_thresh']}:offset={js['target_offset']}:linear=true")
 
 
 def step_mux() -> None:
     os.makedirs(OUT, exist_ok=True)
-    mix = os.path.join(BUILD, "mix.wav")
+    mix = os.path.join(BUILD, "mix_limited.wav")
+    pre_limit(os.path.join(BUILD, "mix.wav"), mix)
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", os.path.join(BUILD, "video.mp4"), "-i", mix,
                     "-af", loudnorm_args(mix) + f",aresample={SR}", "-map", "0:v", "-map", "1:a",
                     "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-t", str(DURATION),
