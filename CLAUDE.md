@@ -18,7 +18,7 @@ This repo has two kinds of videos: the German→Turkish learning videos (see REA
 
 ## How to make one
 
-Copy `tiktok-trees/` to a new folder (Liam voice, no music, centred subtitles), then change:
+Copy `tiktok-penicillin/` to a new folder. It already has one-word subtitles, the host on screen for about half the video (`on: false` keys in `CHAR_KEYS`), no music, no outro, and a real photo with a credit in its README. Then change:
 - `SCRIPT`, `make_cues` and the sound-effect cues in `audio.py` for the new topic. Leave out the outro line, the follow button and the deadpan zoom.
 - `buildChunks` in `scene.js`, so that each chunk is exactly one word: one word on screen at a time, each with its own pop.
 - `CHAR_KEYS` and `drawCharacter`, so the host is only on screen in about half of the scenes. He should slide in and out, and the visual-only scenes should use the whole screen.

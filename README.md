@@ -37,5 +37,6 @@ cd fiiller-video && python make_video.py
 |---|---|---|
 | [Oymyakon](tiktok-oymyakon/) | The coldest inhabited place on Earth (−67.7 °C, colder than Mars, school until −52 °C, cars that never stop) | 25 s |
 | [More trees than stars](tiktok-trees/) | 3 trillion trees vs 100–400 billion stars in the Milky Way, 375 trees per human, 15 billion cut per year | 25 s |
+| [The messy lab that gave us penicillin](tiktok-penicillin/) | Story/history: Fleming's vacation in 1928, the mold that killed bacteria, the first antibiotic | 25 s |
 
 The host of the shorts is the green character in [`character/`](character/) (poses: `serious`, `thinking`, `thumbsup`, with transparent backgrounds).
