@@ -44,5 +44,6 @@ cd fiiller-video && python make_video.py
 | [Flamingos sind nicht rosa](tiktok-flamingos/) | Deutsch, Fun Fact: die Farbe kommt aus dem Futter | 30 s |
 | [Der Rattenfänger von Hameln](tiktok-hameln/) | Deutsch, Geschichte/Mystery: 130 Kinder 1284, die Ratten kamen später | 30 s |
 | [Du hast dein Gesicht noch nie gesehen](tiktok-spiegel/) | Deutsch, Fun Fact/Psychologie: Spiegelbild vs. Foto, Studie von 1977 | 30 s |
+| [Die Mikrowelle](tiktok-mikrowelle/) | Deutsch, Story/Erfindung: geschmolzener Schokoriegel 1945, Popcorn, explodierendes Ei, 2 Dollar Prämie | 30 s |
 
 The host of the shorts is the green character in [`character/`](character/) (poses: `serious`, `thinking`, `thumbsup`, with transparent backgrounds).
