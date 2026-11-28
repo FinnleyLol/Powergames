@@ -56,7 +56,7 @@ TARGET_LUFS = -6.5  # owner asked three times for louder. Measured result about 
 PRE_GAIN_DB = 9
 PRE_LIMIT = 0.45
 TRUE_PEAK = -1.5
-POST_LIMIT = 0.78
+POST_LIMIT = 0.74
 FPS = 30
 SR = 48000
 

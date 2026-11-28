@@ -47,5 +47,6 @@ cd fiiller-video && python make_video.py
 | [Die Mikrowelle](tiktok-mikrowelle/) | Deutsch, Story/Erfindung: geschmolzener Schokoriegel 1945, Popcorn, explodierendes Ei, 2 Dollar Prämie | 30 s |
 | [Venus: ein Tag länger als ein Jahr](tiktok-venus/) | Deutsch, Fun Fact/Weltraum: 243 vs. 225 Tage, Sonne im Westen, 465 °C, Sonde 1982 | 30 s |
 | [Morgens bist du größer](tiktok-groesse/) | Deutsch, Fun Fact/Körper: Bandscheiben, 1 cm am Tag, Astronauten bis 5 cm | 30 s |
+| [Der Emu-Krieg](tiktok-emukrieg/) | Deutsch, Geschichte/kurios: 1932, Militär gegen 20.000 Emus, die Emus gewinnen | 30 s |
 
 The host of the shorts is the green character in [`character/`](character/) (poses: `serious`, `thinking`, `thumbsup`, with transparent backgrounds).
