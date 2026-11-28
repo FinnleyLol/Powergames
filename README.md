@@ -52,5 +52,6 @@ cd fiiller-video && python make_video.py
 | [Honig wird nie schlecht](tiktok-honig/) | Deutsch, Fun Fact/Essen: Honig aus Pharaonengräbern, kaum Wasser, Bienen, kristallisiert | 30 s |
 | [Ein Oktopus hat drei Herzen](tiktok-oktopus/) | Deutsch, Fun Fact/Tiere: drei Herzen, blaues Blut, Nervenzellen in den Armen | 30 s |
 | [Der Kleber, der nicht klebt](tiktok-klebezettel/) | Deutsch, Story/Erfindung: der missglückte Kleber von 1968, Lesezeichen im Kirchenchor, gelbes Restpapier | 30 s |
+| [Napoleon war gar nicht klein](tiktok-napoleon/) | Deutsch, Geschichte/Mythos: 168 cm, französische vs. englische Zoll, Karikaturen, große Garde | 30 s |
 
 The host of the shorts is the green character in [`character/`](character/) (poses: `serious`, `thinking`, `thumbsup`, with transparent backgrounds).
