@@ -50,5 +50,6 @@ cd fiiller-video && python make_video.py
 | [Der Emu-Krieg](tiktok-emukrieg/) | Deutsch, Geschichte/kurios: 1932, Militär gegen 20.000 Emus, die Emus gewinnen | 30 s |
 | [Zwei Pizzen für 10.000 Bitcoin](tiktok-pizza/) | Deutsch, Story/Geld: 2010, 40 $ damals, später über 1 Milliarde | 30 s |
 | [Honig wird nie schlecht](tiktok-honig/) | Deutsch, Fun Fact/Essen: Honig aus Pharaonengräbern, kaum Wasser, Bienen, kristallisiert | 30 s |
+| [Ein Oktopus hat drei Herzen](tiktok-oktopus/) | Deutsch, Fun Fact/Tiere: drei Herzen, blaues Blut, Nervenzellen in den Armen | 30 s |
 
 The host of the shorts is the green character in [`character/`](character/) (poses: `serious`, `thinking`, `thumbsup`, with transparent backgrounds).
